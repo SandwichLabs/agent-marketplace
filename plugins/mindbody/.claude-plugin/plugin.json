@@ -1,0 +1,20 @@
+{
+  "name": "mindbody",
+  "version": "1.0.0",
+  "description": "Run a studio's Mindbody business software from your AI agent in your own Chrome: schedules, rosters, bookings, client status, sales, attendance and reports.",
+  "author": {
+    "name": "Sandwich Labs",
+    "url": "https://sandwichlabs.dev"
+  },
+  "homepage": "https://github.com/SandwichLabs/agent-marketplace/tree/main/plugins/mindbody",
+  "repository": "https://github.com/SandwichLabs/agent-marketplace",
+  "keywords": [
+    "mindbody",
+    "fitness",
+    "studio",
+    "gym",
+    "wellness",
+    "browser",
+    "claude-in-chrome"
+  ]
+}

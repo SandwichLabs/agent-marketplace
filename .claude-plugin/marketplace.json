@@ -1,0 +1,32 @@
+{
+  "name": "sandwichlabs",
+  "description": "Skills and plugins from Sandwich Labs for small businesses running their operations with AI agents.",
+  "owner": {
+    "name": "Sandwich Labs",
+    "url": "https://sandwichlabs.dev"
+  },
+  "plugins": [
+    {
+      "name": "mindbody",
+      "description": "Run a studio's Mindbody business software from your AI agent in your own Chrome: schedules, rosters, bookings, client status, sales, attendance and reports.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Sandwich Labs",
+        "url": "https://sandwichlabs.dev"
+      },
+      "homepage": "https://github.com/SandwichLabs/agent-marketplace/tree/main/plugins/mindbody",
+      "repository": "https://github.com/SandwichLabs/agent-marketplace",
+      "keywords": [
+        "mindbody",
+        "fitness",
+        "studio",
+        "gym",
+        "wellness",
+        "browser",
+        "claude-in-chrome"
+      ],
+      "source": "./plugins/mindbody",
+      "category": "productivity"
+    }
+  ]
+}

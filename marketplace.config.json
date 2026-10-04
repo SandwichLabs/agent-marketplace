@@ -1,0 +1,15 @@
+{
+  "$comment": "Source of truth for the catalogs. scripts/build.mjs generates .claude-plugin/marketplace.json, .agents/plugins/marketplace.json and each plugin's vendor manifests from this file and plugins/*/plugin.json.",
+  "name": "sandwichlabs",
+  "displayName": "Sandwich Labs",
+  "description": "Skills and plugins from Sandwich Labs for small businesses running their operations with AI agents.",
+  "owner": { "name": "Sandwich Labs", "url": "https://sandwichlabs.dev" },
+  "repository": "SandwichLabs/agent-marketplace",
+  "plugins": [
+    {
+      "name": "mindbody",
+      "category": "Productivity",
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" }
+    }
+  ]
+}
