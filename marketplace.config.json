@@ -3,13 +3,27 @@
   "name": "sandwichlabs",
   "displayName": "Sandwich Labs",
   "description": "Skills and plugins from Sandwich Labs for small businesses running their operations with AI agents.",
-  "owner": { "name": "Sandwich Labs", "url": "https://sandwichlabs.dev" },
+  "owner": {
+    "name": "Sandwich Labs",
+    "url": "https://sandwichlabs.dev"
+  },
   "repository": "SandwichLabs/agent-marketplace",
   "plugins": [
     {
       "name": "mindbody",
       "category": "Productivity",
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" }
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
+    },
+    {
+      "name": "pr-sizzle-reel",
+      "category": "Creativity",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
     }
   ]
 }

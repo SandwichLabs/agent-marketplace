@@ -1,0 +1,36 @@
+{
+  "name": "pr-sizzle-reel",
+  "version": "1.0.0",
+  "description": "Plan a beat-matched Instagram sizzle reel for The PR Method Fitness: a script in the studio's voice, a cut sheet timed to a song from the owner's own library, and a CapCut walkthrough.",
+  "author": {
+    "name": "Sandwich Labs",
+    "url": "https://sandwichlabs.dev"
+  },
+  "homepage": "https://sandwichlabs.dev/for/prmethod/sizzlereels/",
+  "repository": "https://github.com/SandwichLabs/agent-marketplace",
+  "keywords": [
+    "instagram",
+    "reels",
+    "video",
+    "capcut",
+    "fitness",
+    "marketing",
+    "the-pr-method"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PR Method sizzle reel",
+    "shortDescription": "Plan a beat-matched Instagram reel and build it in CapCut.",
+    "longDescription": "Asks four questions, maps the song you pick (tempo, the drop), writes the reel in The PR Method's voice from its brand sheet, times every cut and line of text to the beat, and walks you through building it in CapCut.",
+    "developerName": "Sandwich Labs",
+    "category": "Creativity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Let's make a 30-second reel for the free week.",
+      "Plan a hype reel for our new Saturday class."
+    ],
+    "websiteURL": "https://sandwichlabs.dev/for/prmethod/sizzlereels/"
+  }
+}

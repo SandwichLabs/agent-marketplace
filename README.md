@@ -6,12 +6,13 @@ an AI agent. One repo, installable from Claude first, and from Codex, ChatGPT an
 | Plugin | What it does | Skills |
 | --- | --- | --- |
 | [**mindbody**](plugins/mindbody) | Run a studio's Mindbody business site from your agent, in your own Chrome: schedules, rosters, bookings, client status, sales, attendance, reports. Asks before anything that moves money. | `mindbody` |
+| [**pr-sizzle-reel**](plugins/pr-sizzle-reel) | Plan a beat-matched Instagram reel for The PR Method: a script in the studio's voice, a cut sheet timed to a song from your library, and a CapCut walkthrough. | `pr-sizzle-reel` |
 
 ## Install
 
 ### Claude desktop and claude.ai (easiest)
 
-Paste the plugin's install prompt into a new chat. For Mindbody:
+Paste the plugin's install prompt into a new chat (each plugin's `SETUP.md` starts with its own). For Mindbody:
 
 > Use the skill-creator skill to install the Mindbody skill by following
 > https://raw.githubusercontent.com/SandwichLabs/agent-marketplace/main/plugins/mindbody/SETUP.md. Walk me through
