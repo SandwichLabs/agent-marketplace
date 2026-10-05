@@ -16,7 +16,7 @@
  * No dependencies: Node 20+, python3 (skill validation) and zip.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 
 const root = resolve(dirname(new URL(import.meta.url).pathname), "..");
@@ -149,15 +149,92 @@ if (check) {
 }
 
 // Upload packages: a zip that opens to <skill>/SKILL.md, the layout skill-creator's package_skill.py produces.
+// claude.ai's Save skill refuses a zip of more than 200 entries, so folders the config lists under package.bundle
+// are merged into one Markdown file each (staged in dist/.stage; the plugin keeps its folders).
+const MAX_ENTRIES = 200;
 const dist = join(root, "dist");
+const stage = join(dist, ".stage");
 rmSync(dist, { recursive: true, force: true });
-mkdirSync(dist);
-for (const { dir, skills } of plugins) {
+mkdirSync(stage, { recursive: true });
+for (const { dir, entry, skills } of plugins) {
 	for (const s of skills) {
+		cpSync(join(root, "plugins", dir, "skills", s), join(stage, s), { recursive: true });
+		bundle(join(stage, s), entry.package?.bundle ?? []);
+		const entries = walk(join(stage, s)).length + 1;
+		if (entries > MAX_ENTRIES) {
+			console.error(`✗ ${s}: ${entries} zip entries, over claude.ai's ${MAX_ENTRIES}; add its biggest folders to package.bundle in marketplace.config.json`);
+			process.exit(1);
+		}
 		const out = join(dist, `${s}.skill`);
-		const r = spawnSync("zip", ["-qrX", out, s, "-x", "*.DS_Store", "*/__pycache__/*"], { cwd: join(root, "plugins", dir, "skills"), stdio: "inherit" });
+		const r = spawnSync("zip", ["-qrX", out, s, "-x", "*.DS_Store", "*/__pycache__/*"], { cwd: stage, stdio: "inherit" });
 		if (r.status !== 0) process.exit(r.status ?? 1);
 		writeFileSync(join(dist, `${s}.zip`), readFileSync(out));
-		console.log(`packaged ${relative(root, out)} and ${s}.zip (${Math.round(statSync(out).size / 1024)} KB)`);
+		console.log(`packaged ${relative(root, out)} and ${s}.zip (${entries} entries, ${Math.round(statSync(out).size / 1024)} KB)`);
+	}
+}
+rmSync(stage, { recursive: true, force: true });
+
+/** Every file and folder under dir, as absolute paths. */
+function walk(dir) {
+	return readdirSync(dir, { withFileTypes: true }).flatMap((d) => {
+		const p = join(dir, d.name);
+		return d.isDirectory() ? [p, ...walk(p)] : [p];
+	});
+}
+
+/**
+ * Merge each folder matching the globs ("articles/*": every folder in articles/) into <folder>.md: its index.md
+ * first, then each page under an anchor named after its file. Relative links anywhere in the skill that pointed into
+ * a merged folder are rewritten to <folder>.md#<page>.
+ */
+function bundle(skillDir, globs) {
+	const folders = globs.flatMap((g) => {
+		if (!g.endsWith("/*")) return [join(skillDir, g)];
+		const base = join(skillDir, g.slice(0, -2));
+		return existsSync(base) ? readdirSync(base, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => join(base, d.name)) : [];
+	});
+	if (!folders.length) return;
+	const moved = new Map(); // old absolute path of a page → [new file, anchor or ""]
+	for (const f of folders) {
+		for (const p of readdirSync(f)) {
+			if (!p.endsWith(".md") || statSync(join(f, p)).isDirectory()) throw new Error(`${relative(skillDir, f)}/${p}: only Markdown pages can be bundled`);
+			moved.set(join(f, p), [`${f}.md`, p === "index.md" ? "" : p.slice(0, -3)]);
+		}
+	}
+	const linkTo = (fromFile, target) => relative(dirname(fromFile), target);
+	const rewrite = (text, oldFile, newFile) =>
+		text.replace(/\]\(([^)\s#]+\.md)(#[^)\s]*)?\)/g, (m, href, frag) => {
+			if (/^[a-z]+:/i.test(href)) return m;
+			const hit = moved.get(resolve(dirname(oldFile), href));
+			if (hit) return `](${linkTo(newFile, hit[0])}${hit[1] ? `#${hit[1]}` : frag ?? ""})`;
+			if (oldFile === newFile) return m;
+			return `](${linkTo(newFile, resolve(dirname(oldFile), href))}${frag ?? ""})`;
+		});
+	// Files that stay put: rewrite links into the merged folders.
+	for (const p of walk(skillDir)) {
+		if (!p.endsWith(".md") || moved.has(p) || statSync(p).isDirectory()) continue;
+		const text = readFileSync(p, "utf8");
+		const next = rewrite(text, p, p);
+		if (next !== text) writeFileSync(p, next);
+	}
+	// The merged folders: each page's front matter becomes a source line under its anchor.
+	for (const f of folders) {
+		const pages = readdirSync(f).sort((a, b) => (a === "index.md" ? -1 : b === "index.md" ? 1 : a.localeCompare(b)));
+		const out = `${f}.md`;
+		const parts = pages.map((p) => {
+			const old = join(f, p);
+			let text = rewrite(readFileSync(old, "utf8"), old, out);
+			const fm = text.match(/^---\n([\s\S]*?)\n---\n/);
+			if (fm) {
+				const field = (k) => fm[1].match(new RegExp(`^${k}:\\s*(.+)$`, "m"))?.[1].trim();
+				text = text.slice(fm[0].length);
+				const src = field("source");
+				if (src) text = text.replace(/^(# .*\n)/, `$1\nSource: ${src}${field("source_updated") ? ` (updated ${field("source_updated")})` : ""}\n`);
+			}
+			return p === "index.md" ? text.trim() : `<a id="${p.slice(0, -3)}"></a>\n\n${text.trim()}`;
+		});
+		const note = `<!-- Bundled from ${relative(skillDir, f)}/ (${pages.length} pages) so the upload stays under ${MAX_ENTRIES} files. Each page starts at an <a id> anchor named after its original file. -->`;
+		writeFileSync(out, `${note}\n\n${parts.join("\n\n---\n\n")}\n`);
+		rmSync(f, { recursive: true });
 	}
 }
