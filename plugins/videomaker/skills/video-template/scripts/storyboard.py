@@ -3,7 +3,7 @@
 component of a video kit on a 16-bar sample reel. Inlines the runtime (fx.js, reel.js), the kit's cards.js,
 brand.json, fonts and logo, so what plays is exactly what the renderer draws.
 
-  python3 storyboard.py [KIT_DIR] [-o KIT_DIR/storyboard.html] [--edit sample-edit.json] [--title "Video Kit"]
+  python3 storyboard.py [KIT_DIR] [-o KIT_DIR/storyboard.html] [--edit KIT_DIR/sample-edit.json] [--title "Video Kit"]
 
 Standard library only: runs in Claude's chat sandbox as well as on a laptop.
 """
@@ -29,14 +29,18 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("kit", nargs="?", default=str(SKILL / "kit"))
     ap.add_argument("-o", "--out")
-    ap.add_argument("--edit", default=str(HERE / "sample-edit.json"))
+    ap.add_argument("--edit", help="sample reel (default: KIT_DIR/sample-edit.json, else the starter's)")
     ap.add_argument("--title", default="Video Kit")
     a = ap.parse_args()
 
     kit = pathlib.Path(a.kit).resolve()
     rt = next(p for p in (SKILL / "runtime", HERE.parent / "runtime") if p.exists())
     brand = json.loads((kit / "brand.json").read_text())
-    edit = json.loads(pathlib.Path(a.edit).read_text())
+    # the kit's own sample reel carries copy for this business; the starter's is a generic gym
+    ep = pathlib.Path(a.edit) if a.edit else next(p for p in (kit / "sample-edit.json", HERE / "sample-edit.json") if p.exists())
+    if not a.edit and ep.parent == HERE and not brand.get("_starter"):
+        print("warning: no kit/sample-edit.json; the storyboard shows the starter's gym copy", file=sys.stderr)
+    edit = json.loads(ep.read_text())
 
     faces = []
     for role, f in brand["fonts"].items():

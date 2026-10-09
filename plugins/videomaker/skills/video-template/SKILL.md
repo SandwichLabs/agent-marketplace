@@ -40,6 +40,10 @@ Never commit or publish a client's logo or footage anywhere public.
 
 Ask for whatever you can't find yourself:
 
+- **What kind of business it is, and what the reels are for**: read it from their site or assets ("a two-person
+  software consultancy that wants inbound leads", "a bakery announcing a second shop"). Ask only if it isn't clear.
+  Everything below follows from it: the starter kit's sample copy is for a gym, so don't carry its words over to
+  another kind of business.
 - **Their assets**: the logo (SVG, or a PNG with a transparent background, is best), and any brand guide.
 - **Their website**: read it for the name, the colours (the site's theme colour and buttons), the address, the offer
   and the lines they already use about themselves (the `voice` list).
@@ -60,18 +64,33 @@ choices with the owner, each in a sentence:
   hook line still owns the first frame. `"full"` puts a logo card on black for the first bar, which costs the first two
   seconds of attention. `"none"` drops it.
 
-Also set `logo_style`: `"neon"` if the logo is a neon sign or glow, otherwise `"plain"`.
+Also set `logo_style`: `"neon"` if the logo is a neon sign or glow, otherwise `"plain"`, and `business` (the type and
+the goal from step 1). `classes` holds what they sell (services, products, menu items), not only classes.
 
-### 3. Adjust the look (only if needed)
+### 3. Write the sample reel for this business
+
+The storyboard plays a 16-bar sample reel. Copy this skill's `scripts/sample-edit.json` to `kit/sample-edit.json` and
+rewrite its words for this business, keeping the bars, styles and cards as they are:
+
+- Every `text` line, the lower-third `props` and the shot ids (the stand-in footage shows them as labels, so name
+  shots this business would film: `standup`, `whiteboard`, `screen_closeup` for a dev shop, not `squat`).
+- Sample copy is placeholder copy: short, the right length for its style, and plainly about this kind of business and
+  its goal ("SHIP/EVERY/WEEK.", "CODE REVIEWED."), but it makes no claims of fact. Real reels write their own words.
+- Keep `"title"` saying it's sample copy.
+
+`storyboard.py` uses `kit/sample-edit.json` when it's there.
+
+### 4. Adjust the look (only if needed)
 
 The starter `cards.js` suits most gyms and studios: bold stacked caps, one accent colour, soft dark scrims for
-legibility. Change it only for what the owner asks or their brand needs (a different headline font, rounded pills, a
+legibility. Change it only for what the owner asks or their brand needs (a calmer type style for a law firm or a
+clinic, say) (a different headline font, rounded pills, a
 lower-third shape). Keep to the kit API, keep every style inside the safe box, and test with the storyboard.
 
 Fonts must be files in `kit/fonts/` (woff2), free to use commercially (Google Fonts' open-licence fonts are). To swap
 one, download its woff2, put it in `fonts/` and update `brand.json` `fonts`.
 
-### 4. Build and show the storyboard
+### 5. Build and show the storyboard
 
 ```bash
 python3 <this skill>/scripts/storyboard.py <kit folder>
@@ -85,13 +104,13 @@ logo.
 If you can publish HTML artifacts, publish `storyboard.html` and share the link. Otherwise open it in their browser
 (`open` on a Mac). Ask them to press play, and to try **Use my clip**.
 
-### 5. Iterate
+### 6. Iterate
 
 Take feedback ("bigger hours", "logo in white", "no strike-through"), change `brand.json` or `cards.js`, rebuild, and
 republish to the same artifact. Two or three rounds is normal. Look at the storyboard yourself when you can (a
 screenshot of a few moments) before saying a change is done.
 
-### 6. Save
+### 7. Save
 
 On their computer, the kit is already in place. Tell them videomaker will use it for every reel. In chat, zip the kit
 folder (without `storyboard.html` if size matters) and share `kit.zip`.

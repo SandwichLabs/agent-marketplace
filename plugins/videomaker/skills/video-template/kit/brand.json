@@ -2,6 +2,7 @@
   "kit_api": 1,
   "name": "Your Studio",
   "short": "YOUR STUDIO",
+  "business": { "type": "strength studio", "goal": "fill classes with new members" },
   "colors": {
     "bg": "#0E0E10",
     "ink": "#F4F2EE",
@@ -40,6 +41,7 @@
   "_notes": {
     "_starter": "This is the neutral starter kit. Every value marked here is a placeholder: the video-template skill replaces them from the business's own website and assets, then deletes this key.",
     "logo": "File name inside the kit folder (e.g. \"logo.svg\"), copied from the owner's assets. logo_style: \"plain\" fades it in; \"neon\" flickers it on like a sign (for neon-style logos).",
+    "business": "What kind of business this is (\"software consultancy\", \"bakery\", \"yoga studio\") and what its reels are for. Read it from the site or assets; ask if it isn't clear. It sets the sample copy in kit/sample-edit.json and the tone of every reel.",
     "hours": "List of {\"days\": \"MON–FRI\", \"time\": \"6A–8P\"}. Ask the owner or read them from their booking system; never invent hours. The out card skips the hours block while this is empty.",
     "hook": "How every reel opens. mode \"template\": the kit fixes the opening line (text, with \"/\" between stacked lines, and strike = the beat its strike-through starts, or null) and every reel uses it. mode \"jit\": videomaker writes a fresh hook for each reel from its topic. style is the text style it uses.",
     "start_card": "\"bug\" = the logo fades in small over the hook footage within one bar; the hook line owns frame 0. \"full\" = a full logo card on black for the first bar. \"none\" = no start card.",
