@@ -16,8 +16,10 @@
     }
     const loaded = v => {
       if (v.tagName === 'IMG') return v.complete && v.naturalWidth ? Promise.resolve() : new Promise((res, rej) => { v.onload = res; v.onerror = () => rej(new Error(`image ${v.src}`)); });
-      return v.readyState >= 2 ? Promise.resolve() : new Promise((res, rej) => {
-        v.addEventListener('loadeddata', res, { once: true }); v.addEventListener('error', () => rej(new Error(`video ${v.src} (codec not supported by this browser?)`)), { once: true });
+      // metadata is enough: seek() waits for the frame itself. (readyState drops back to 1 while a seek fetches unbuffered
+      // data, and loadeddata fires only once per load, so waiting for it here could wait forever.)
+      return v.readyState >= 1 ? Promise.resolve() : new Promise((res, rej) => {
+        v.addEventListener('loadedmetadata', res, { once: true }); v.addEventListener('error', () => rej(new Error(`video ${v.src} (codec not supported by this browser?)`)), { once: true });
       });
     };
     async function seek(src, t) {

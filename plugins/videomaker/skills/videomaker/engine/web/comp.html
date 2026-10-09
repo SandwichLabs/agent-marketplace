@@ -58,7 +58,8 @@ try {
     sections: reel.sections.map(s => ({ name: s.name, b0: s.b0, b1: s.b1 })),
     energy: beats.energy || [], cues: reel.cues(), warnings: reel.warnings,
   });
-  window.REELR = { fps: reel.fps, duration: reel.duration, audio, canvas, ready, frame, plan, errors, warnings: reel.warnings };
+  const need = i => reel.need(i / reel.fps).map(([src]) => library.sources[src]?.url || src);
+  window.REELR = { fps: reel.fps, duration: reel.duration, audio, canvas, ready, frame, need, plan, errors, warnings: reel.warnings };
 
   if (!render) {
     document.body.className = 'preview';

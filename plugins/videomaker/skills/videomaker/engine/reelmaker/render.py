@@ -38,6 +38,43 @@ async def open_page(browser, url, timeout=90000):
 
 
 GRAB = "async ([i, q]) => { await window.REELR.frame(i); return window.REELR.canvas.toDataURL('image/jpeg', q).slice(23); }"
+STALL = 45  # seconds one frame may take before the page is treated as stuck
+
+
+class Progress:
+    """A line every few seconds ("120/950 frames"), so a slow run never looks like a hung one."""
+    def __init__(self, total, what="frames", every=5.0):
+        self.total, self.what, self.every, self.n, self.t0 = total, what, every, 0, time.time()
+        self.last = self.t0
+
+    def tick(self):
+        self.n += 1
+        now = time.time()
+        if now - self.last >= self.every and self.n < self.total:
+            self.last = now
+            print(f"  {self.n}/{self.total} {self.what}, {self.n / (now - self.t0):.0f} per s", file=sys.stderr, flush=True)
+
+
+async def grab(browser, url, page, i, quality):
+    """One frame as JPEG bytes. If the page stalls (a video that stops loading), reopen it and try once more, then fail
+    with the frame and the media it was waiting for, never hang."""
+    for attempt in (1, 2):
+        try:
+            return page, base64.b64decode(await asyncio.wait_for(page.evaluate(GRAB, [i, quality]), STALL))
+        except asyncio.TimeoutError:
+            try:
+                srcs = await asyncio.wait_for(page.evaluate("i => window.REELR.need(i)", i), 5)
+            except Exception:
+                srcs = ["?"]
+            print(f"  frame {i} stalled for {STALL} s waiting on {', '.join(srcs)}; reopening the page", file=sys.stderr, flush=True)
+            try:
+                await asyncio.wait_for(page.close(), 10)
+            except Exception:
+                pass
+            if attempt == 2:
+                raise SystemExit(f"rendering stalled at frame {i} waiting on {', '.join(srcs)}. "
+                                 f"Run it again; if it repeats, use -j 2, or delete .engine/proxies and run ingest again.")
+            page = await open_page(browser, url)
 
 
 def _url(base, ws, reel_dir):
@@ -60,19 +97,16 @@ async def _frames(ws, reel_dir, frames_dir, step=1, quality=0.92, jobs=None, t_f
         shutil.rmtree(frames_dir, ignore_errors=True)
         frames_dir.mkdir(parents=True)
         per = math.ceil(len(idx) / jobs)
-        done, t0, errs = 0, time.time(), []
+        t0, errs, prog = time.time(), [], Progress(len(idx), every=5.0 if progress else 15.0)
 
         async def worker(chunk):
-            nonlocal done
             if not chunk:
                 return
             page = await open_page(browser, url)
             for i in chunk:
-                data = await page.evaluate(GRAB, [i, quality])
-                (frames_dir / f"{(i - i0) // step:05d}.jpg").write_bytes(base64.b64decode(data))
-                done += 1
-                if progress and done % 300 == 0:
-                    print(f"  {done}/{len(idx)} frames, {done / (time.time() - t0):.0f} fps", file=sys.stderr, flush=True)
+                page, data = await grab(browser, url, page, i, quality)
+                (frames_dir / f"{(i - i0) // step:05d}.jpg").write_bytes(data)
+                prog.tick()
             errs.extend(page._errs)
             await page.close()
 
@@ -133,12 +167,13 @@ async def _stills(ws, reel_dir, times, out_dir):
         browser = await launch(p, ws.ok())
         page = await open_page(browser, _url(base, ws, reel_dir))
         fps = await page.evaluate("window.REELR.fps")
-        paths = []
+        paths, prog = [], Progress(len(times), "stills")
         for k, t in enumerate(times):
-            data = await page.evaluate(GRAB, [round(t * fps), 0.9])
+            page, data = await grab(browser, _url(base, ws, reel_dir), page, round(t * fps), 0.9)
             pth = out_dir / f"still-{k:02d}.jpg"
-            pth.write_bytes(base64.b64decode(data))
+            pth.write_bytes(data)
             paths.append(pth)
+            prog.tick()
         await browser.close()
     srv.shutdown()
     return paths
