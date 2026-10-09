@@ -47,9 +47,14 @@ Ask for whatever you can't find yourself:
 - **Their assets**: the logo (SVG, or a PNG with a transparent background, is best), and any brand guide.
 - **Their website**: read it for the name, the colours (the site's theme colour and buttons), the address, the offer
   and the lines they already use about themselves (the `voice` list).
-- **Hours**: ask, or read them from their booking system if another skill can (for example a Mindbody skill). Never
-  guess hours.
-- **The offer and the call to action**: the headline ("TRY A FREE WEEK."), a short pill ("UNLIMITED CLASSES"), the URL.
+- **Hours**: only if they have public opening hours (a gym, a shop, a café). Ask, or read them from their booking
+  system if another skill can (for example a Mindbody skill). Never guess hours. A business without public hours (a
+  consultancy, an online service) skips them: leave `hours` empty and the out card drops that block. Don't press the
+  owner for hours.
+- **What they sell** (`classes`): their services, products or menu items, a few words each ("Strength", "Mobility";
+  "Data audits", "Dashboards"; "Sourdough", "Custom cakes").
+- **The offer and the call to action**: the headline ("TRY A FREE WEEK.", "BOOK A FREE CALL."), a short pill
+  ("UNLIMITED CLASSES", "30 MINUTES, NO PITCH"), the URL.
 
 ### 2. Fill in `brand.json`
 
@@ -65,7 +70,13 @@ choices with the owner, each in a sentence:
   seconds of attention. `"none"` drops it.
 
 Also set `logo_style`: `"neon"` if the logo is a neon sign or glow, otherwise `"plain"`, and `business` (the type and
-the goal from step 1). `classes` holds what they sell (services, products, menu items), not only classes.
+the goal from step 1). `classes` holds what they sell (services, products, menu items), not only classes; the key
+keeps its name.
+
+**The address** shows as a lower-third on the out card: `address.city` is drawn large and `address.line` small under
+it. A street address is `{"line": "123 Example Street", "city": "Chicago"}`; a neighbourhood works too:
+`{"line": "Rogers Park", "city": "Chicago"}`. An online-only business sets `"address": null`, and the out card drops
+the lower-third (an empty `{}` would still draw an empty bar).
 
 ### 3. Write the sample reel for this business
 
@@ -73,7 +84,8 @@ The storyboard plays a 16-bar sample reel. Copy this skill's `scripts/sample-edi
 rewrite its words for this business, keeping the bars, styles and cards as they are:
 
 - Every `text` line, the lower-third `props` and the shot ids (the stand-in footage shows them as labels, so name
-  shots this business would film: `standup`, `whiteboard`, `screen_closeup` for a dev shop, not `squat`).
+  shots this business would film: `standup`, `whiteboard`, `screen_closeup` for a dev shop, `oven`, `counter`,
+  `storefront` for a bakery, not `squat`).
 - Sample copy is placeholder copy: short, the right length for its style, and plainly about this kind of business and
   its goal ("SHIP/EVERY/WEEK.", "CODE REVIEWED."), but it makes no claims of fact. Real reels write their own words.
 - Keep `"title"` saying it's sample copy.
@@ -82,10 +94,10 @@ rewrite its words for this business, keeping the bars, styles and cards as they 
 
 ### 4. Adjust the look (only if needed)
 
-The starter `cards.js` suits most gyms and studios: bold stacked caps, one accent colour, soft dark scrims for
-legibility. Change it only for what the owner asks or their brand needs (a calmer type style for a law firm or a
-clinic, say) (a different headline font, rounded pills, a
-lower-third shape). Keep to the kit API, keep every style inside the safe box, and test with the storyboard.
+The starter `cards.js` suits most businesses: bold stacked caps, one accent colour, soft dark scrims for legibility.
+Change it only for what the owner asks or their brand needs: a calmer type style for a law firm or a clinic, a
+different headline font, rounded pills, a lower-third shape. Keep to the kit API, keep every style inside the safe
+box, and test with the storyboard.
 
 Fonts must be files in `kit/fonts/` (woff2), free to use commercially (Google Fonts' open-licence fonts are). To swap
 one, download its woff2, put it in `fonts/` and update `brand.json` `fonts`.
@@ -99,7 +111,7 @@ python3 <this skill>/scripts/storyboard.py <kit folder>
 It writes `<kit>/storyboard.html`, a single self-contained page that plays every component on a 16-bar sample reel at
 124 BPM, with play and scrub, a click track, safe-zone overlay, a tempo switch and **Use my clip** (they can preview the
 cards over one of their own videos). It lists each component with how a reel asks for it, and flags missing hours or
-logo.
+logo (ignore the hours flag for a business without public hours).
 
 If you can publish HTML artifacts, publish `storyboard.html` and share the link. Otherwise open it in their browser
 (`open` on a Mac). Ask them to press play, and to try **Use my clip**.

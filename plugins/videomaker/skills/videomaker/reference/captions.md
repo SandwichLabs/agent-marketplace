@@ -9,7 +9,7 @@ shows it with a copy button.
 <hook line, matching the reel's opening, one short sentence>
 
 <one or two sentences: what it is and who it's for, in the business's voice>
-<the call to action: the offer and where to book, e.g. "Book at yourstudio.com (link in bio).">
+<the call to action: the offer and where to book or buy, e.g. "Book at yourstudio.com (link in bio).">
 
 <3–6 hashtags: what it is, where it is, and one for the business>
 
@@ -18,12 +18,12 @@ shows it with a copy button.
 
 ## Rules
 
-- Take the offer, URL, address and class names from `kit/brand.json`, and the voice from its `voice` lines. Never
+- Take the offer, URL, address and what they sell (`classes`) from `kit/brand.json`, and the voice from its `voice` lines. Never
   invent prices, results, testimonials or claims.
 - Keep the first line under about 60 characters: it's all that shows before "more".
 - At most one emoji per paragraph, and only if the business already uses them. Look at their past posts if the owner
   shares any.
-- Hashtags: specific beats generic (`#chicagofitness` over `#fitness`). Include the neighbourhood or city if
+- Hashtags: specific beats generic (`#chicagofitness` over `#fitness`, `#chicagobakery` over `#bakery`). Include the neighbourhood or city if
   `brand.json` has one.
 - **Music credit.** If the track came from a library that requires attribution (CC BY), put its credit line here,
   exactly as the licence asks. Catalog tracks list it in `music.md`.

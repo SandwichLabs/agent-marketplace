@@ -1,7 +1,7 @@
 # Designing a kit
 
-The kit plays over real gym footage on a phone, for under a second per line. Legibility and one strong idea beat
-detail.
+The kit plays over the business's own footage on a phone, for under a second per line. Legibility and one strong
+idea beat detail.
 
 ## Colour
 
@@ -29,6 +29,8 @@ detail.
 
 - SVG first, then a PNG of at least 1000 px with a transparent background. A logo on a white box looks pasted on: ask
   for a transparent or light-on-dark version.
+- An SVG logo with `<text>` in it renders in system fonts only (an image can't use the kit's web fonts), so the
+  lettering comes out wrong. Ask for a version with the text outlined (converted to paths), or use a PNG.
 - `logo_style: "neon"` adds a flicker-on and a glow; use it only when the logo is a neon sign or glows on the site.
 
 ## Copy
@@ -37,7 +39,8 @@ detail.
   the owner's own words, nothing invented.
 - On-screen lines are five words or fewer. Rewrite long taglines into short stacked versions with the owner's okay
   ("Small classes and real coaching, so you get stronger every week." becomes "STRONGER / EVERY / WEEK." then
-  "SMALL CLASSES. / REAL COACHING.").
+  "SMALL CLASSES. / REAL COACHING."; "We turn messy spreadsheets into dashboards your team uses." becomes
+  "MESSY DATA. / CLEAR / ANSWERS.").
 
 ## The hook
 

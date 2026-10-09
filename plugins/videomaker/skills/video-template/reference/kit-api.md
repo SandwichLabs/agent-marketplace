@@ -14,10 +14,10 @@ anything that works in the storyboard renders identically.
 | `fonts` | `display`, `body`, `mono`: `{family, file, weights}` | `file` is relative to the kit. `weights` is a CSS weight or range ("300 700"). |
 | `logo`, `logo_style` | file name or `null`; `"plain"` or `"neon"` | Start and out cards. |
 | `url`, `instagram` | text | Out card (URL), captions. |
-| `address` | `{line, city}` | Out card lower-third. |
-| `hours` | list of `{days, time}` (up to 4 rows show) | Out card; skipped while empty. |
+| `address` | `{line, city}` or `null` | Out card lower-third: `city` large, `line` (a street or a neighbourhood) small. `null` skips it. |
+| `hours` | list of `{days, time}` (up to 4 rows show) | Out card; skipped while empty (fine for a business without public hours). |
 | `offer` | `{headline, pill}` | Out card. |
-| `classes`, `voice` | lists of text | What videomaker may put on screen. |
+| `classes`, `voice` | lists of text | What videomaker may put on screen. `classes` is whatever they sell: classes, services, products or menu items. |
 | `hook` | `{mode: "template"\|"jit", style, text, strike}` | How reels open (see the videomaker edit format). |
 | `start_card` | `"bug"`, `"full"` or `"none"` | The start card. |
 | `safe` | `{l, r, top, bot}` in canvas pixels | The text box clear of the Reels UI. Keep the default unless a platform needs a tighter one. |

@@ -51,10 +51,13 @@ repository (`https://codeload.github.com/SandwichLabs/agent-marketplace/zip/refs
 Use the folder they opened if it's meant for videos; otherwise suggest `~/Movies/Reels`. Avoid Desktop and Documents if
 iCloud syncs them (the video cache is large). Then:
 
-1. Find the installed skill folder (the plugin cache, e.g. `~/.claude/plugins/…/videomaker/skills/videomaker`).
+1. Find the installed skill folder: the videomaker skill's base directory, as reported when the skill loads. It's
+   normally `~/.claude/plugins/cache/<marketplace>/videomaker/<version>/skills/videomaker`. There may be a second copy
+   under `~/.claude/plugins/marketplaces/` (the marketplace clone); either works, but prefer the cache copy.
 2. Run `"<skill folder>/bin/reelmaker" init` from the workspace.
 3. Ask them to drag their clips and photos into `clips/`, and any music they own into `music/` (or tell you where
-   they are, and copy them in).
+   they are, and copy them in). If they have no music, that's fine: the videomaker skill suggests royalty-free tracks
+   with `reelmaker catalog` and downloads one with `reelmaker fetch <id>`. There's no need to search the web.
 
 ## Step 4: set up the tools
 
@@ -68,7 +71,9 @@ skill's `reference/setup.md`.
 ## Step 5: make it theirs
 
 Hand off to the **video-template** skill to build their kit from their logo and website. When the storyboard looks
-right to them, suggest a first reel: "Make a 30-second reel for <their offer>."
+right to them, suggest a first reel: "Make a 30-second reel for <their offer>." Each reel comes with a
+`board.html` review page. It embeds the media and can be several MB, so open it locally (`reelmaker open`) and publish
+it as an artifact only if they want to view it on another device.
 
 ## If something goes wrong
 

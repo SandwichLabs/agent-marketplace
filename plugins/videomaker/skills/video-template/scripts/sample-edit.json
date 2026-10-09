@@ -147,19 +147,22 @@
    "at": "5",
    "len": 2,
    "style": "label",
-   "text": "STRENGTH"
+   "text": "STRENGTH",
+   "tag": "CLASS"
   },
   {
    "at": "5:3",
    "len": 2,
    "style": "label",
-   "text": "CONDITIONING"
+   "text": "CONDITIONING",
+   "tag": "CLASS"
   },
   {
    "at": "6",
    "len": 2,
    "style": "label",
-   "text": "MOBILITY"
+   "text": "MOBILITY",
+   "tag": "CLASS"
   },
   {
    "at": "6:3",

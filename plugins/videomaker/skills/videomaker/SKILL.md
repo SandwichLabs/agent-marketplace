@@ -1,6 +1,6 @@
 ---
 name: videomaker
-description: Make a finished, beat-matched promo reel (a 1080x1920 MP4 for Instagram Reels or TikTok) on the person's own computer from a folder of their clips and photos and a music track, in their brand's video kit. Sets up its own tools (uv, ffmpeg, a headless browser), tags the footage, cuts every shot to the song's measured beat with the drop on a fixed bar, renders, and writes the post caption. Use when someone asks for a reel, a sizzle or hype video, a promo, a class or event teaser, or a beat-matched video from their footage. Needs a shell on their computer (Claude desktop's Code tab or Claude Code).
+description: Make a finished, beat-matched promo reel (a 1080x1920 MP4 for Instagram Reels or TikTok) on the person's own computer from a folder of their clips and photos and a music track, in their brand's video kit. Sets up its own tools (uv, ffmpeg, a headless browser), tags the footage, cuts every shot to the song's measured beat with the drop on a fixed bar, renders, and writes the post caption. Use when someone asks for a reel, a sizzle or hype video, a promo, a launch, class or event teaser, or a beat-matched video from their footage. Needs a shell on their computer (Claude desktop's Code tab or Claude Code).
 ---
 
 # videomaker
@@ -24,7 +24,8 @@ a chat-only session (a cloud sandbox that can't see their folders), say so in on
 with the video-template skill there, and stop.
 
 Commands below are written as `reelmaker …`. Run them as `"<this skill's folder>/bin/reelmaker" …`, from the
-workspace folder.
+workspace folder, where the skill's folder is the base directory reported when this skill loads (normally under
+`~/.claude/plugins/cache/`).
 
 ## The run
 
@@ -46,7 +47,7 @@ Take what you can from their message and fill the rest with defaults. Don't inte
 
 | Ingredient | Default |
 | --- | --- |
-| Topic and purpose (a class launch, the offer, an event) | From their message. Ask only if there's nothing to go on. |
+| Topic and purpose (a new service, product or class, the offer, an event) | From their message. Ask only if there's nothing to go on. |
 | Length | 30 s (16 bars). 60 s (32 bars) if they ask. |
 | Clips, images, text | Everything in `clips/`; you pick. Use any they name first. |
 | Track | A file in `music/`, if there's exactly one, or the one they name. |
@@ -58,10 +59,11 @@ Write the brief to `reels/<yyyy-mm-dd>-<topic>/brief.md` (a few lines), so a lat
 ### 3. The track (the only required stop, when there's no track)
 
 - **They have one** in `music/`: use it.
-- **No track**: offer three options in one message: a track from the curated catalog (run `reelmaker catalog` and
-  suggest three that suit the topic, saying which need a credit line), their own, or an original made in Suno
-  (`reference/suno.md`: write the prompt and wait for the WAV). Wait for their choice; this is the one place you have
-  to. For a catalog pick, `reelmaker fetch <id>` downloads it into `music/` with its licence note.
+- **No track**: run `reelmaker catalog` first and suggest three royalty-free tracks from it that suit the topic,
+  saying which need a credit line. In the same message, offer the other two options: their own track, or an original
+  made in Suno (`reference/suno.md`: write the prompt and wait for the WAV). Wait for their choice; this is the one
+  place you have to. For a catalog pick, `reelmaker fetch <id>` downloads it into `music/` with its licence note.
+  Don't search or scrape music sites for tracks.
 - Then cut it to the reel: `reelmaker music music/<track> <reel> --bars 16 --drop-bar 9` (`--bars 32 --drop-bar 17`
   for 60 s). Read the printed table. The drop it found should be where the energy jumps. If it isn't, or the owner
   says the drop is elsewhere, rerun with `--drop-at <seconds>`. If the song has a clean ending, try `--ending song`.
@@ -77,7 +79,7 @@ Write the brief to `reels/<yyyy-mm-dd>-<topic>/brief.md` (a few lines), so a lat
 
 Write `reels/<name>/edit.json` following edit-format.md and the shape for the length in craft.md: sections that tile
 every bar, shots picked by tag, text lines on the beat, the `start` card at bar 1 and the `outro` card on the last 3–4
-bars. Words come only from the brief, the kit's `voice`, classes and offer.
+bars. Words come only from the brief, the kit's `voice`, `classes` (what the business sells) and offer.
 
 ### 6. Check it, look at it, fix it once
 
@@ -91,8 +93,9 @@ bars. Words come only from the brief, the kit's `voice`, classes and offer.
 - `reelmaker preview <reel>` renders a fast 540p draft (`preview.mp4`).
 - Write `caption.txt` (captions.md).
 - `reelmaker board <reel>` builds `board.html`: the preview, the caption with a copy button, the timeline with a
-  thumbnail per cut, and every on-screen line. If you can publish HTML artifacts, publish it so they can watch it
-  anywhere (it contains their footage and stays private to them). Otherwise run `reelmaker open reels/<name>/board.html`.
+  thumbnail per cut, and every on-screen line. It embeds the media, so it can be several MB. Open it locally with
+  `reelmaker open reels/<name>/board.html`. Publish it as an artifact only if they want to watch it on another device
+  (it contains their footage and stays private to them).
 
 ### 8. Render
 
@@ -122,5 +125,6 @@ Edit `edit.json` (or `kit/brand.json` for brand facts), then `check`, `stills` f
   testimonials or prices; if they want a stat, ask them for it.
 - **Music rights.** Use only tracks they're licensed to post (music.md). Commercial songs from the radio stay out of
   the file: render with `--no-music` and have them add it in Instagram's own picker.
-- **People.** Only use members who are OK being in an ad. Exclude anyone you're unsure about and say so.
+- **People.** Only use people (members, clients, staff) who are OK being in an ad. Exclude anyone you're unsure
+  about and say so.
 - **Their files stay theirs.** Don't upload footage anywhere except an artifact you publish for them to view.

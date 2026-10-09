@@ -175,7 +175,7 @@ pre { margin: 10px 0 0; overflow-x: auto; background: var(--panel); border: 1px 
     const h = document.createElement('div'); h.textContent = BRAND.hours?.length ? BRAND.hours.map(x => `${x.days} ${x.time}`).join(' · ') : 'Not set yet'; block('Hours', h);
     const l = document.createElement('div'); l.textContent = LOGO ? `Logo (${BRAND.logo_style || 'plain'})` : 'No logo yet: using the wordmark'; block('Logo', l);
     const warn = [];
-    if (!BRAND.hours?.length) warn.push('Hours are empty, so the out card skips them. Add the studio hours to brand.json.');
+    if (!BRAND.hours?.length) warn.push('Hours are empty, so the out card skips them. Add them to brand.json if the business keeps public hours.');
     if (!LOGO) warn.push('No logo file in the kit yet. Add one (SVG or PNG with a transparent background) and rebuild.');
     for (const w of [...warn, ...reel.warnings]) { const d = document.createElement('p'); d.className = 'warn'; d.textContent = w; document.getElementById('warnings').append(d); }
   }

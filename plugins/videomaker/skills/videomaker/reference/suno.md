@@ -22,7 +22,7 @@ Fill in the genre and tempo to suit the business (house, electro, trap, rock), a
 make a reel-shaped track with a breakdown, a build and a drop.
 
 ```
-<genre, e.g. French house, electro-funk>, <tempo, 120–130> BPM, instrumental, four-on-the-floor kick from the first beat, punchy club mix, side-chained bass, short breakdown with drums out, snare-roll build-up, one bar of silence before the drop, massive drop, high energy gym anthem, clean hard ending, no fade out
+<genre, e.g. French house, electro-funk>, <tempo, 120–130> BPM, instrumental, four-on-the-floor kick from the first beat, punchy club mix, side-chained bass, short breakdown with drums out, snare-roll build-up, one bar of silence before the drop, massive drop, high energy <mood, e.g. gym anthem, feel-good, confident>, clean hard ending, no fade out
 ```
 
 ## Exclude Styles

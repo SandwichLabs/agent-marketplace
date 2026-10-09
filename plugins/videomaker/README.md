@@ -5,14 +5,15 @@ and the same look every time. Ask in plain words:
 
 - "Make a 30-second reel for the free week from my clips."
 - "Do a hype video for the new Saturday class, using the swing clips first."
+- "A 30-second reel announcing our data audit service, from the office clips."
 - "Set up our video template: logo, colours, hours and the offer."
 - "Same reel, different song." · "Make it 60 seconds."
 
-Two skills:
+Two skills, for any small business (a gym, a bakery, a consultancy):
 
 | Skill | What it does | Runs in |
 | --- | --- | --- |
-| **video-template** | Builds your brand's **video kit** from your logo and website: colours, fonts, the opening hook, a start card with your logo, an out card that animates your hours, address, offer and URL, and the text styles. Shows it all moving in a storyboard you can play, even over one of your own clips. | Any Claude with code execution, including a chat |
+| **video-template** | Builds your brand's **video kit** from your logo and website: colours, fonts, the opening hook, a start card with your logo, an out card that animates your offer, URL and, if you have them, hours and address, and the text styles. Shows it all moving in a storyboard you can play, even over one of your own clips. | Any Claude with code execution, including a chat |
 | **videomaker** | Turns a folder of clips and photos plus a track into a 1080×1920 MP4. It sets up its own tools, tags your footage, cuts every shot on the beat with the drop on cue, renders, and writes the caption. It can suggest a royalty-free track or write a Suno prompt for an original. | Claude desktop's **Code tab** or Claude Code (needs your files) |
 
 **Install** in Claude desktop's Code tab or Claude Code:
@@ -58,7 +59,7 @@ skills/videomaker/
   reference/               setup, craft, edit format, music, Suno, captions
 ```
 
-Your footage, music and kit stay in your folder. Nothing is uploaded unless you ask Claude to publish a preview for you.
+Your footage, music and kit stay in your folder. Nothing is uploaded unless you ask Claude to publish a preview for you; the review page opens locally by default.
 
 ## Fonts
 

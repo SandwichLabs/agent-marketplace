@@ -86,10 +86,11 @@
     });
   }
 
-  // LABEL: a mono tag over a big name, for class names. tag: "CLASS" (default). Two beats each reads well.
+  // LABEL: a big name with an optional mono tag above it (tag: "CLASS", "SERVICE", "NEW"; none by default), for what
+  // the business sells. Two beats each reads well.
   function label(ctx, ln, k) {
     const a = out(k.t, ln.t1, 0.1); if (a <= 0) return;
-    const name = ln.lines.join(' ').toUpperCase(), tag = (ln.tag || 'CLASS').toUpperCase();
+    const name = ln.lines.join(' ').toUpperCase(), tag = (ln.tag || '').toUpperCase();
     ctx.globalAlpha = a; scrim(ctx, 720, 1260, 0.5); shadowed(ctx, 30, 0.6);
     font(ctx, 32, { family: fam('mono'), weight: 700 }); ctx.fillStyle = C.accent; ctx.letterSpacing = '4px';
     ctx.fillText(tag, SAFE.l, 880); ctx.letterSpacing = '0px';
@@ -225,7 +226,7 @@
     },
   };
 
-  // LOWER: a lower-third for a class or coach. props: { title, tag }.
+  // LOWER: a lower-third for a service, product, class or person. props: { title, tag }.
   const lower = {
     beats: 8,
     draw(ctx, k, p) {
@@ -260,7 +261,7 @@
       ['slam', 'One word per beat, each slams in; the last word lands accent.'],
       ['stack', 'Two or three short lines rise in a beat apart, the last in accent.'],
       ['quiet', 'Thin and slow for the breakdown: one line per bar.'],
-      ['label', 'A mono tag over a big name, for class names. Two beats each.'],
+      ['label', 'A big name with an optional mono tag, for services, products or classes. Two beats each.'],
       ['shout', 'The lift: words fall in on the beat and shatter on the drop.'],
       ['caption', 'One sentence in the body face, low in the frame.'],
       ['start', 'Start card: the logo fades in small over the hook footage within one bar.'],
