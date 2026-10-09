@@ -47,6 +47,6 @@ marketplace added first (the marketplace may already have been added by then).
 
 ## Recommendation: ready for the client? What must change first?
 
-Merged as 0.2.0 on 2026-10-09 for a fresh-install test by Zac. Deferred by Zac: stock-footage path, font helper,
+Merged as 0.2.0 on 2026-10-09. Zac ran a fresh install end to end and signed it off as the first version. Deferred by Zac: stock-footage path, font helper,
 extra `check` warnings, smaller proxies, lighter board (the client has his own footage). Still unverified on a Mac:
 real iPhone footage (HEVC/HDR, rotation, HEIC, 60 fps/4K), the bare-machine bootstrap (Phase B), and Phase E/F.
