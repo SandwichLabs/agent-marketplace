@@ -27,16 +27,14 @@ You need a shell on their computer: the **Code tab** in Claude desktop, or Claud
 
 ## Step 2: add the marketplace and install
 
-Ask them to type this into the prompt (you can't run slash commands for them):
-
-```
-/plugin install videomaker --marketplace SandwichLabs/agent-marketplace
-```
-
-On an older Claude that doesn't know `--marketplace`, it's two commands, one at a time:
+Ask them to type these into the prompt, one at a time, waiting for each to finish (you can't run slash commands for
+them):
 
 ```
 /plugin marketplace add SandwichLabs/agent-marketplace
+```
+
+```
 /plugin install videomaker@sandwichlabs
 ```
 

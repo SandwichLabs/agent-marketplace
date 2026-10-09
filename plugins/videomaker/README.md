@@ -18,7 +18,8 @@ Two skills:
 **Install** in Claude desktop's Code tab or Claude Code:
 
 ```
-/plugin install videomaker --marketplace SandwichLabs/agent-marketplace
+/plugin marketplace add SandwichLabs/agent-marketplace
+/plugin install videomaker@sandwichlabs
 ```
 
 Or paste the prompt at the top of [SETUP.md](SETUP.md) and Claude walks you through it, including the first setup.
