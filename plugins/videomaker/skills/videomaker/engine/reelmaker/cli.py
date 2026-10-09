@@ -3,7 +3,7 @@
   reelmaker doctor                 set up / check everything (ffmpeg, a render browser, the kit, a smoke render)
   reelmaker ingest                 clips/ -> proxies, shots at scene cuts, thumbnails, contact sheets
   reelmaker shots [--untagged]     the shot library as a table
-  reelmaker tag SHOT TAG... [--note N] [--name N]   tag a shot (tag "exclude" to keep it out)
+  reelmaker tag SHOT TAG... [--note N] [--name N]   tag shots: an id, ids joined by commas, or a pattern ("clip-*"); "exclude" keeps them out
   reelmaker catalog                the curated royalty-free tracks (reference/catalog.json)
   reelmaker fetch ID               download a catalog track into music/ with its licence note
   reelmaker analyze TRACK          tempo, bars, energy and drop candidates of a track
@@ -39,7 +39,7 @@ def main(argv=None):
     sub.add_parser("init")
     s = sub.add_parser("ingest"); s.add_argument("--only", nargs="*", help="file names to (re)ingest")
     s = sub.add_parser("shots"); s.add_argument("--untagged", action="store_true"); s.add_argument("--json", action="store_true")
-    s = sub.add_parser("tag"); s.add_argument("shot"); s.add_argument("tags", nargs="*"); s.add_argument("--note"); s.add_argument("--name"); s.add_argument("--replace", action="store_true")
+    s = sub.add_parser("tag"); s.add_argument("shot", help="a shot id, several joined by commas, or a pattern like 'clip-name-*'"); s.add_argument("tags", nargs="*"); s.add_argument("--note"); s.add_argument("--name"); s.add_argument("--replace", action="store_true")
     sub.add_parser("catalog")
     s = sub.add_parser("fetch"); s.add_argument("id")
     s = sub.add_parser("analyze"); s.add_argument("track"); s.add_argument("--bpm", type=float, default=124)
@@ -85,14 +85,23 @@ def main(argv=None):
             print(f"{k:28s} {v['b'] - v['a']:5.1f}s  {(v.get('name') or ''):14s} {' '.join(v.get('tags', [])):28s} {v.get('note', '')}")
         print(f"{len(rows)} shots")
     elif a.cmd == "tag":
+        import fnmatch
         lib = ws.library()
-        if a.shot not in lib["shots"]:
-            die(f"no shot {a.shot}")
-        s = lib["shots"][a.shot]
-        s["tags"] = a.tags if a.replace else sorted(set(s.get("tags", [])) | set(a.tags))
-        if a.note is not None: s["note"] = a.note
-        if a.name is not None: s["name"] = a.name
-        ws.save_library(lib); print(f"{a.shot}: {' '.join(s['tags'])} {s.get('note', '')}")
+        ids = []
+        for pat in filter(None, a.shot.split(",")):
+            hit = fnmatch.filter(lib["shots"], pat)
+            if not hit:
+                die(f"no shot {pat}")
+            ids += [i for i in sorted(hit) if i not in ids]
+        if a.name is not None and len(ids) > 1:
+            die("--name is for one shot")
+        for sid in ids:
+            s = lib["shots"][sid]
+            s["tags"] = a.tags if a.replace else sorted(set(s.get("tags", [])) | set(a.tags))
+            if a.note is not None: s["note"] = a.note
+            if a.name is not None: s["name"] = a.name
+            print(f"{sid}: {' '.join(s['tags'])} {s.get('note', '')}")
+        ws.save_library(lib)
     elif a.cmd == "catalog":
         from .catalog import listing
         listing()

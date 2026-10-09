@@ -25,6 +25,16 @@ def js_literal(obj) -> str:
     return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
 
+def contrast(a: str, b: str) -> float:
+    """WCAG contrast ratio of two #rrggbb colours."""
+    def lum(h):
+        c = [int(h.lstrip("#")[k:k + 2], 16) / 255 for k in (0, 2, 4)]
+        c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+        return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+    hi, lo = sorted((lum(a), lum(b)), reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("kit", nargs="?", default=str(SKILL / "kit"))
@@ -42,6 +52,10 @@ def main():
         print("warning: no kit/sample-edit.json; the storyboard shows the starter's gym copy", file=sys.stderr)
     edit = json.loads(ep.read_text())
 
+    c = brand["colors"]
+    r = contrast(c["accent"], c["bg"])
+    print(f"accent {c['accent']} on bg {c['bg']}: contrast {r:.2f}:1" +
+          ("" if r >= 4.5 else " (below 4.5: lighten the accent, see design.md)"), file=sys.stderr)
     faces = []
     for role, f in brand["fonts"].items():
         p = kit / f["file"]
