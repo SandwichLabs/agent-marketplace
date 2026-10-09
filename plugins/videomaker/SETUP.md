@@ -27,6 +27,10 @@ You need a shell on their computer: the **Code tab** in Claude desktop, or Claud
 
 ## Step 2: add the marketplace and install
 
+**Already installed?** If the **videomaker** and **video-template** skills are available in this session (people often
+install from the Code tab's **+ → Plugins → Add plugin** menu before pasting this), say so and skip to Step 3. If they
+installed it but the skills aren't showing, have them start a new session in the same folder.
+
 Ask them to type these into the prompt, one at a time, waiting for each to finish (you can't run slash commands for
 them):
 
