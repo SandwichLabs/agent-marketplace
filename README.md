@@ -6,6 +6,7 @@ an AI agent. One repo, installable from Claude first, and from Codex, ChatGPT an
 | Plugin | What it does | Skills |
 | --- | --- | --- |
 | [**mindbody**](plugins/mindbody) | Run a studio's Mindbody business site from your agent, in your own Chrome: schedules, rosters, bookings, client status, sales, attendance, reports. Asks before anything that moves money. | `mindbody` |
+| [**videomaker**](plugins/videomaker) | Beat-matched promo reels from your own clips, rendered on your computer: design your video kit as a motion storyboard, then turn footage and a track into a finished reel and caption. | `video-template`, `videomaker` |
 | [**pr-sizzle-reel**](plugins/pr-sizzle-reel) | Plan a beat-matched Instagram reel for The PR Method: a script in the studio's voice, a cut sheet timed to a song from your library, and a CapCut walkthrough. | `pr-sizzle-reel` |
 
 ## Install

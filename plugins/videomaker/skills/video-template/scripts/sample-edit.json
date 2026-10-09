@@ -1,0 +1,219 @@
+{
+ "title": "Kit storyboard: every component on a 30-second, 16-bar reel (sample copy)",
+ "fps": 30,
+ "sections": [
+  {
+   "name": "hook",
+   "bars": [
+    1,
+    2
+   ],
+   "cut": "hold",
+   "shots": [
+    "squat",
+    "chalk"
+   ],
+   "speed": 0.5,
+   "push": 0.08
+  },
+  {
+   "name": "build",
+   "bars": [
+    3,
+    6
+   ],
+   "cut": 1,
+   "shots": [
+    "kb_swing",
+    "sled",
+    "deadlift",
+    "row",
+    "stepup",
+    "coach_cue",
+    "group_wide",
+    "battle"
+   ],
+   "punch": 0.03
+  },
+  {
+   "name": "lift",
+   "bars": [
+    7,
+    8
+   ],
+   "cut": [
+    2,
+    0.5
+   ],
+   "shots": [
+    "plank",
+    "goblet",
+    "stepup",
+    "kb_swing",
+    "row",
+    "sled",
+    "deadlift",
+    "chalk",
+    "squat",
+    "battle"
+   ],
+   "punch": 0.02
+  },
+  {
+   "name": "drop",
+   "bars": [
+    9,
+    11
+   ],
+   "cut": 1,
+   "shots": [
+    "deadlift",
+    "kb_swing",
+    "group_wide",
+    "sled",
+    "battle",
+    "row",
+    "squat",
+    "stepup",
+    "coach_cue",
+    "goblet",
+    "chalk",
+    "plank"
+   ],
+   "punch": 0.04,
+   "hit": {
+    "flash": true,
+    "shake": true,
+    "rgb": true,
+    "burst": true
+   }
+  },
+  {
+   "name": "proof",
+   "bars": [
+    12,
+    13
+   ],
+   "cut": 2,
+   "shots": [
+    "coach_cue",
+    "group_wide",
+    "laugh",
+    "goblet"
+   ]
+  },
+  {
+   "name": "offer",
+   "bars": [
+    14,
+    16
+   ],
+   "cut": "hold",
+   "shots": [
+    "group_wide"
+   ],
+   "speed": 0.5,
+   "push": 0.1
+  }
+ ],
+ "text": [
+  {
+   "at": "1",
+   "len": 5,
+   "style": "hook",
+   "text": "STRONGER/EVERY/WEEK."
+  },
+  {
+   "at": "2:2",
+   "len": 3,
+   "style": "stack",
+   "text": "COACHED,/NOT CROWDED."
+  },
+  {
+   "at": "3",
+   "len": 4,
+   "style": "slam",
+   "text": "MOVE WELL.",
+   "every": 2
+  },
+  {
+   "at": "4",
+   "len": 4,
+   "style": "slam",
+   "text": "LIFT STRONG.",
+   "every": 2
+  },
+  {
+   "at": "5",
+   "len": 2,
+   "style": "label",
+   "text": "STRENGTH"
+  },
+  {
+   "at": "5:3",
+   "len": 2,
+   "style": "label",
+   "text": "CONDITIONING"
+  },
+  {
+   "at": "6",
+   "len": 2,
+   "style": "label",
+   "text": "MOBILITY"
+  },
+  {
+   "at": "6:3",
+   "len": 2,
+   "style": "label",
+   "text": "OPEN GYM",
+   "tag": "MEMBERS",
+   "accent": true
+  },
+  {
+   "at": "7",
+   "len": 4,
+   "style": "quiet",
+   "text": "NO EGO./NO PRESSURE.",
+   "every": 2
+  },
+  {
+   "at": "8",
+   "len": 4,
+   "style": "shout",
+   "text": "ONE MORE REP!"
+  },
+  {
+   "at": "9:2",
+   "len": 5,
+   "style": "stack",
+   "text": "REAL/STRENGTH."
+  },
+  {
+   "at": "10:3",
+   "len": 6,
+   "style": "caption",
+   "text": "Small classes. Real coaching, every session."
+  }
+ ],
+ "cards": [
+  {
+   "card": "start",
+   "at": "1",
+   "len": 4
+  },
+  {
+   "card": "lower",
+   "at": "12",
+   "len": 8,
+   "props": {
+    "title": "Small classes",
+    "tag": "Coached"
+   }
+  },
+  {
+   "card": "outro",
+   "at": "14",
+   "len": 12
+  }
+ ]
+}

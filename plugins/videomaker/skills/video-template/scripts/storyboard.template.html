@@ -1,0 +1,242 @@
+<title>__TITLE__</title>
+<style>
+/* Layout: the 9:16 player on the left, the component list and brand sheet on the right; stacks on phones.
+   One deliberate dark look (it previews video), so no light theme. */
+:root {
+  --bg: #0B0B0C; --panel: #141416; --line: #26262A; --fg: #EEECE8; --muted: #9A958F; --accent: __ACCENT__;
+  --mono: 'Space Mono', ui-monospace, Menlo, monospace; --ui: 'DM Sans', system-ui, sans-serif; --display: 'Space Grotesk', system-ui, sans-serif;
+  color-scheme: dark;
+}
+__FONTFACES__
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 15px/1.5 var(--ui); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 64px; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 860px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+h1 { font: 700 2rem/1.05 var(--display); text-transform: uppercase; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+h2 { font: 700 .78rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0; }
+p { margin: 0; max-width: 62ch; }
+.player { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: flex; flex-direction: column; gap: 10px; }
+.stage { position: relative; width: 100%; max-width: 420px; aspect-ratio: 9 / 16; background: #000; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font: 12px var(--mono); color: var(--muted); }
+.controls input[type=range] { flex: 1 1 160px; accent-color: var(--accent); min-width: 0; }
+button, .file { background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; font: 700 12px var(--mono); letter-spacing: .04em; cursor: pointer; }
+button.primary { background: var(--accent); color: #0C0D0F; border-color: var(--accent); }
+button:focus-visible, .file:focus-within, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed=true] { border-color: var(--accent); color: var(--accent); }
+.file input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.file { position: relative; display: inline-block; }
+select { background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; font: 12px var(--mono); }
+.readout { font-variant-numeric: tabular-nums; min-width: 11ch; }
+.side { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.intro { display: flex; flex-direction: column; gap: 10px; }
+.meta { color: var(--muted); font-size: .9rem; }
+.list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) auto; gap: 4px 14px; padding: 12px 4px; border-bottom: 1px solid var(--line); align-items: baseline; cursor: pointer; }
+.item:hover, .item.on { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.item b { font: 700 .95rem var(--display); text-transform: uppercase; letter-spacing: .02em; }
+.item .when { font: 11px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.item code { grid-column: 2 / 4; font: 11.5px/1.5 var(--mono); color: var(--muted); overflow-x: auto; white-space: pre; display: block; }
+.brand { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.brand > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.sw { display: flex; gap: 6px; flex-wrap: wrap; }
+.sw i { width: 34px; height: 34px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); display: block; }
+.k { font: 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.warn { border-left: 3px solid var(--accent); padding: 6px 12px; color: var(--fg); background: color-mix(in srgb, var(--accent) 10%, transparent); font-size: .92rem; }
+details summary { cursor: pointer; font: 700 12px var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+pre { margin: 10px 0 0; overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px; font: 11.5px/1.5 var(--mono); color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .stage { box-shadow: 0 0 0 1px var(--line); } }
+</style>
+
+<div class="wrap">
+  <div class="player">
+    <div class="stage"><canvas id="c" width="1080" height="1920" aria-label="Reel preview, 1080 by 1920"></canvas><canvas id="safe" width="1080" height="1920" hidden></canvas></div>
+    <div class="controls">
+      <button class="primary" id="play" type="button">PLAY</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Scrub">
+      <span class="readout" id="time">0.00 s · 1:1</span>
+    </div>
+    <div class="controls">
+      <button id="safebtn" type="button" aria-pressed="false">SAFE ZONES</button>
+      <button id="clickbtn" type="button" aria-pressed="true">CLICK</button>
+      <label for="bpm">BPM</label>
+      <select id="bpm"><option>118</option><option selected>124</option><option>128</option></select>
+      <label class="file">USE MY CLIP<input id="clip" type="file" accept="video/*,image/*"></label>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="intro">
+      <h2>Video kit · __BRAND__</h2>
+      <h1>__TITLE__</h1>
+      <p>Every card, type style and transition in the kit, playing on a 16-bar sample reel at the tempo of a typical track. The stand-in footage is generated; press <b>Use my clip</b> to watch it over one of your own videos. What plays here is the same code that renders the final reel.</p>
+      <p class="meta" id="meta"></p>
+      <div id="warnings"></div>
+    </div>
+
+    <div class="intro">
+      <h2>Components</h2>
+      <p class="meta">Click one to jump to it. The line under each is how a reel's edit asks for it.</p>
+      <div class="list" id="list"></div>
+    </div>
+
+    <div class="intro">
+      <h2>Brand sheet</h2>
+      <div class="brand" id="brand"></div>
+    </div>
+
+    <details>
+      <summary>The sample edit (edit.json)</summary>
+      <pre id="editsrc"></pre>
+    </details>
+  </div>
+</div>
+
+<script>__FX__</script>
+<script>__REEL__</script>
+<script>__CARDS__</script>
+<script>
+(function () {
+  const BRAND = __BRAND_JSON__;
+  const EDIT = __EDIT_JSON__;
+  const LOGO = __LOGO_URI__;
+  const { W, H, hash, clamp } = FX;
+
+  const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+  const safeC = document.getElementById('safe');
+  let logo = null, userSrc = null, reel, playing = false, t = 0, last = 0, lastBeat = -1, audio = null, clickOn = true;
+
+  // stand-in footage: a warm, moving gradient per shot id with a silhouette band, labelled
+  const standins = {};
+  function standin(id) {
+    const c = standins[id] ||= Object.assign(document.createElement('canvas'), { width: 540, height: 960 });
+    const x = c.getContext('2d'), h0 = hash(id.length * 31 + id.charCodeAt(0), 3), s = t * 0.6 + h0 * 10;
+    const g = x.createLinearGradient(0, 0, 540 * (0.3 + h0 * 0.4), 960);
+    g.addColorStop(0, `hsl(${20 + h0 * 25}, 45%, ${10 + 6 * Math.sin(s)}%)`); g.addColorStop(1, `hsl(${200 + h0 * 40}, 12%, 6%)`);
+    x.fillStyle = g; x.fillRect(0, 0, 540, 960);
+    for (let k = 0; k < 3; k++) {
+      const cx = 270 + 200 * Math.sin(s * (0.5 + k * 0.3) + k * 2), cy = 300 + k * 220 + 60 * Math.cos(s * 0.7 + k), r = 160 + 60 * hash(k, h0 * 100);
+      const rg = x.createRadialGradient(cx, cy, 0, cx, cy, r); rg.addColorStop(0, `rgba(255,170,90,${0.18 + 0.1 * k})`); rg.addColorStop(1, 'rgba(0,0,0,0)');
+      x.fillStyle = rg; x.fillRect(0, 0, 540, 960);
+    }
+    x.fillStyle = 'rgba(0,0,0,.55)'; // a figure-ish band, bobbing on the beat
+    const bob = reel ? 18 * reel.grid.pulse(t, 0.2) : 0;
+    x.beginPath(); x.ellipse(270 + 40 * Math.sin(s), 640 + bob, 90, 260, 0, 0, Math.PI * 2); x.fill();
+    x.beginPath(); x.arc(270 + 40 * Math.sin(s), 360 + bob, 60, 0, Math.PI * 2); x.fill();
+    return c;
+  }
+  const media = {
+    get: () => userSrc,
+    standin: id => userSrc || standin(id),
+    label(L, id) { if (userSrc) return; L.font = "700 44px 'Space Mono', monospace"; L.fillStyle = 'rgba(255,255,255,.28)'; L.textAlign = 'center'; L.fillText(`[ ${id} ]`, W / 2, H * 0.9); L.textAlign = 'left'; },
+  };
+
+  function build(bpm) {
+    const bars = 16, spb = 60 / bpm;
+    const beats = { bpm, beats: Array.from({ length: bars * 4 }, (_, i) => i * spb), duration: bars * 4 * spb };
+    reel = REEL.create({ edit: EDIT, beats, kit: KIT, brand: BRAND, logo, media, standins: true });
+    document.getElementById('meta').textContent = `${bars} bars at ${bpm} BPM · ${beats.duration.toFixed(1)} s · one bar = ${(4 * spb).toFixed(3)} s · 1080 × 1920`;
+    renderList(); drawSafe();
+  }
+
+  // ---- component list: first use of each style/card in the sample ----
+  function firstUse(name) {
+    const ln = reel.lines.find(l => l.style === name); if (ln) return { t: ln.t0 + 0.05, src: JSON.stringify(EDIT.text[ln.n]) };
+    const cd = reel.cards.find(c => c.card === name); if (cd) return { t: cd.t0 + 0.05, src: JSON.stringify(EDIT.cards.find(c => c.card === name)) };
+    return null;
+  }
+  function renderList() {
+    const list = document.getElementById('list'); list.textContent = '';
+    for (const [name, desc] of KIT.catalog) {
+      const u = firstUse(name);
+      const row = document.createElement('div'); row.className = 'item'; row.tabIndex = 0; row.dataset.t = u ? u.t : 0;
+      const b = document.createElement('b'); b.textContent = name;
+      const d = document.createElement('span'); d.textContent = desc;
+      const w = document.createElement('span'); w.className = 'when';
+      if (u) { const bi = reel.grid.index(u.t); w.textContent = `${Math.floor(bi / 4) + 1}:${Math.floor(bi % 4) + 1}`; }
+      const c = document.createElement('code'); c.textContent = u ? u.src : 'not in the sample';
+      row.append(b, d, w, c);
+      const go = () => { t = +row.dataset.t; draw(); };
+      row.onclick = go; row.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
+      list.append(row);
+    }
+  }
+  function renderBrand() {
+    const el = document.getElementById('brand'), C = BRAND.colors;
+    const block = (k, node) => { const d = document.createElement('div'); const s = document.createElement('span'); s.className = 'k'; s.textContent = k; d.append(s, node); el.append(d); };
+    const sw = document.createElement('div'); sw.className = 'sw';
+    for (const [n, v] of Object.entries(C)) { const i = document.createElement('i'); i.style.background = v; i.title = `${n} ${v}`; sw.append(i); }
+    block('Colours', sw);
+    const f = document.createElement('div'); f.innerHTML = '';
+    for (const role of ['display', 'body', 'mono']) { const p = document.createElement('div'); p.textContent = `${role}: ${BRAND.fonts[role].family}`; p.style.fontFamily = `'${BRAND.fonts[role].family}'`; f.append(p); }
+    block('Type', f);
+    const o = document.createElement('div'); o.textContent = `${BRAND.offer?.headline || '—'} · ${BRAND.offer?.pill || ''}`; block('Offer', o);
+    const a = document.createElement('div'); a.textContent = `${BRAND.address?.line || '—'}, ${BRAND.address?.city || ''} · ${BRAND.url || ''}`; block('Where', a);
+    const h = document.createElement('div'); h.textContent = BRAND.hours?.length ? BRAND.hours.map(x => `${x.days} ${x.time}`).join(' · ') : 'Not set yet'; block('Hours', h);
+    const l = document.createElement('div'); l.textContent = LOGO ? `Logo (${BRAND.logo_style || 'plain'})` : 'No logo yet: using the wordmark'; block('Logo', l);
+    const warn = [];
+    if (!BRAND.hours?.length) warn.push('Hours are empty, so the out card skips them. Add the studio hours to brand.json.');
+    if (!LOGO) warn.push('No logo file in the kit yet. Add one (SVG or PNG with a transparent background) and rebuild.');
+    for (const w of [...warn, ...reel.warnings]) { const d = document.createElement('p'); d.className = 'warn'; d.textContent = w; document.getElementById('warnings').append(d); }
+  }
+
+  function drawSafe() { // the Reels UI: top 220, bottom 420, right 150 of the lower two-thirds; dashed = the kit's text box
+    const x = safeC.getContext('2d'), S = BRAND.safe; x.clearRect(0, 0, W, H);
+    x.fillStyle = 'rgba(255,60,120,.28)'; x.fillRect(0, 0, W, 220); x.fillRect(0, H - 420, W, 420); x.fillRect(W - 150, H / 3, 150, H * 2 / 3 - 420);
+    x.setLineDash([18, 12]); x.lineWidth = 4; x.strokeStyle = 'rgba(255,255,255,.7)'; x.strokeRect(S.l, S.top, S.r - S.l, S.bot - S.top);
+  }
+
+  function readout() {
+    const bi = reel.grid.index(t);
+    document.getElementById('time').textContent = `${t.toFixed(2)} s · ${Math.floor(bi / 4) + 1}:${Math.floor(((bi % 4) + 4) % 4) + 1}`;
+    document.getElementById('scrub').value = t / reel.duration * 1000;
+    const rows = [...document.querySelectorAll('.item')];
+    let on = null; for (const r of rows) if (+r.dataset.t <= t + 0.01) on = r;
+    rows.forEach(r => r.classList.toggle('on', r === on));
+  }
+  function draw() { const i = Math.floor(t * reel.fps); reel.draw(ctx, t, i); readout(); }
+
+  function click(accent) {
+    if (!audio || !clickOn) return;
+    const o = audio.createOscillator(), g = audio.createGain(), n = audio.currentTime;
+    o.frequency.value = accent ? 1600 : 1000; g.gain.setValueAtTime(accent ? 0.25 : 0.12, n); g.gain.exponentialRampToValueAtTime(0.0001, n + 0.06);
+    o.connect(g).connect(audio.destination); o.start(n); o.stop(n + 0.07);
+  }
+  function loop(now) {
+    if (!playing) return;
+    t += (now - last) / 1000; last = now;
+    if (t >= reel.duration) { t = 0; lastBeat = -1; }
+    const b = Math.floor(reel.grid.index(t));
+    if (b !== lastBeat) { click(b % 4 === 0); lastBeat = b; }
+    if (userSrc && userSrc.tagName === 'VIDEO' && userSrc.paused) userSrc.play().catch(() => {});
+    draw(); requestAnimationFrame(loop);
+  }
+  const playBtn = document.getElementById('play');
+  playBtn.onclick = () => {
+    playing = !playing; playBtn.textContent = playing ? 'PAUSE' : 'PLAY';
+    if (playing) { try { audio ||= new (window.AudioContext || window.webkitAudioContext)(); audio.resume?.(); } catch (e) { audio = null; } last = performance.now(); requestAnimationFrame(loop); }
+  };
+  document.getElementById('scrub').oninput = e => { t = e.target.value / 1000 * reel.duration; draw(); };
+  document.getElementById('safebtn').onclick = e => { safeC.hidden = !safeC.hidden; e.currentTarget.setAttribute('aria-pressed', String(!safeC.hidden)); };
+  document.getElementById('clickbtn').onclick = e => { clickOn = !clickOn; e.currentTarget.setAttribute('aria-pressed', String(clickOn)); };
+  document.getElementById('bpm').onchange = e => { build(+e.target.value); draw(); };
+  document.getElementById('clip').onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    const url = URL.createObjectURL(f);
+    if (f.type.startsWith('image/')) { const im = new Image(); im.onload = () => { userSrc = im; draw(); }; im.src = url; return; }
+    const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.src = url;
+    v.onloadeddata = () => { userSrc = v; v.play().catch(() => {}); draw(); };
+    v.onerror = () => { const d = document.createElement('p'); d.className = 'warn'; d.textContent = "This browser can't play that file here. Try an .mp4 (H.264) or a photo."; document.getElementById('warnings').append(d); };
+  };
+  addEventListener('keydown', e => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); playBtn.click(); } });
+  document.getElementById('editsrc').textContent = JSON.stringify(EDIT, null, 2);
+
+  async function boot() {
+    if (LOGO) { logo = new Image(); logo.src = LOGO; await new Promise(r => { logo.onload = r; logo.onerror = () => { logo = null; r(); }; }); }
+    try { await Promise.all(['display', 'body', 'mono'].map(r => document.fonts.load(`700 80px '${BRAND.fonts[r].family}'`))); await document.fonts.ready; } catch (e) {}
+    build(124); renderBrand();
+    t = 0.05; draw();
+  }
+  boot();
+})();
+</script>

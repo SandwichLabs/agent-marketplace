@@ -1,0 +1,324 @@
+{
+ "_about": "Instrumental tracks a business may bake into its own social videos, curated 2026-10-09. Downloaded on demand from the source (reelmaker fetch <id>); never redistributed. bpm and drops were measured by reelmaker's analyser (drop_30s/drop_60s: the drop that fits a 16- or 32-bar reel, as a song bar and seconds); nobody has listened to every track, so play it before posting. Licences were read on each source's own page on 2026-10-09; recheck them if this file is old.",
+ "tracks": [
+  {
+   "id": "mixkit-334",
+   "title": "Night Terrors",
+   "artist": "Arulo",
+   "genre": "EDM",
+   "feel": "dark, driving, big drop",
+   "url": "https://assets.mixkit.co/music/334/334.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 130.6,
+   "length_s": 111,
+   "bars": 59,
+   "drop_30s": {
+    "song_bar": 32,
+    "t": 59.246
+   },
+   "drop_60s": {
+    "song_bar": 32,
+    "t": 59.246
+   }
+  },
+  {
+   "id": "mixkit-190",
+   "title": "Electro Dreams",
+   "artist": "Arulo",
+   "genre": "House",
+   "feel": "bright electro house",
+   "url": "https://assets.mixkit.co/music/190/190.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 121.1,
+   "length_s": 116,
+   "bars": 56,
+   "drop_30s": {
+    "song_bar": 32,
+    "t": 64.551
+   },
+   "drop_60s": {
+    "song_bar": 32,
+    "t": 64.551
+   }
+  },
+  {
+   "id": "incompetech-edm-detection-mode",
+   "title": "EDM Detection Mode",
+   "artist": "Kevin MacLeod",
+   "genre": "EDM",
+   "feel": "heavy backbeat, long build",
+   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/EDM%20Detection%20Mode.mp3",
+   "source": "Incompetech",
+   "license": "Creative Commons Attribution 4.0",
+   "license_url": "https://incompetech.com/music/royalty-free/licenses/",
+   "credit": "\"EDM Detection Mode\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttps://creativecommons.org/licenses/by/4.0/",
+   "bpm": 127.8,
+   "length_s": 366,
+   "bars": 184,
+   "drop_30s": {
+    "song_bar": 72,
+    "t": 135.982
+   },
+   "drop_60s": {
+    "song_bar": 72,
+    "t": 135.982
+   }
+  },
+  {
+   "id": "incompetech-in-a-heartbeat",
+   "title": "In a Heartbeat",
+   "artist": "Kevin MacLeod",
+   "genre": "Industrial dance",
+   "feel": "aggressive, dark, intense",
+   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/In%20a%20Heartbeat.mp3",
+   "source": "Incompetech",
+   "license": "Creative Commons Attribution 4.0",
+   "license_url": "https://incompetech.com/music/royalty-free/licenses/",
+   "credit": "\"In a Heartbeat\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttps://creativecommons.org/licenses/by/4.0/",
+   "bpm": 130.0,
+   "length_s": 218,
+   "bars": 116,
+   "drop_30s": {
+    "song_bar": 95,
+    "t": 176.814
+   },
+   "drop_60s": {
+    "song_bar": 95,
+    "t": 176.814
+   }
+  },
+  {
+   "id": "incompetech-laserpack",
+   "title": "Laserpack",
+   "artist": "Kevin MacLeod",
+   "genre": "Electro",
+   "feel": "bouncy, driving",
+   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Laserpack.mp3",
+   "source": "Incompetech",
+   "license": "Creative Commons Attribution 4.0",
+   "license_url": "https://incompetech.com/music/royalty-free/licenses/",
+   "credit": "\"Laserpack\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttps://creativecommons.org/licenses/by/4.0/",
+   "bpm": 128.0,
+   "length_s": 186,
+   "bars": 96,
+   "drop_30s": {
+    "song_bar": 47,
+    "t": 89.223
+   },
+   "drop_60s": {
+    "song_bar": 47,
+    "t": 89.223
+   }
+  },
+  {
+   "id": "mixkit-470",
+   "title": "Golden Storm",
+   "artist": "Diego Nava",
+   "genre": "EDM",
+   "feel": "uplifting, festival",
+   "url": "https://assets.mixkit.co/music/470/470.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 127.4,
+   "length_s": 95,
+   "bars": 48,
+   "drop_30s": {
+    "song_bar": 23,
+    "t": 44.907
+   },
+   "drop_60s": {
+    "song_bar": 23,
+    "t": 44.907
+   }
+  },
+  {
+   "id": "mixkit-1010",
+   "title": "Super Strong",
+   "artist": "Michael Ramir C.",
+   "genre": "EDM",
+   "feel": "hype, short (30 s reels only)",
+   "url": "https://assets.mixkit.co/music/1010/1010.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 120.5,
+   "length_s": 110,
+   "bars": 33,
+   "drop_30s": {
+    "song_bar": 21,
+    "t": 44.025
+   },
+   "drop_60s": null
+  },
+  {
+   "id": "mixkit-777",
+   "title": "A Game",
+   "artist": "Michael Ramir C.",
+   "genre": "EDM",
+   "feel": "confident, sporty",
+   "url": "https://assets.mixkit.co/music/777/777.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 128.0,
+   "length_s": 113,
+   "bars": 56,
+   "drop_30s": {
+    "song_bar": 44,
+    "t": 83.47
+   },
+   "drop_60s": {
+    "song_bar": 22,
+    "t": 42.214
+   }
+  },
+  {
+   "id": "mixkit-1012",
+   "title": "Take this Higher",
+   "artist": "Michael Ramir C.",
+   "genre": "EDM",
+   "feel": "uplifting, energetic",
+   "url": "https://assets.mixkit.co/music/1012/1012.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 125.1,
+   "length_s": 99,
+   "bars": 46,
+   "drop_30s": {
+    "song_bar": 14,
+    "t": 29.054
+   },
+   "drop_60s": {
+    "song_bar": 26,
+    "t": 52.053
+   }
+  },
+  {
+   "id": "mixkit-1183",
+   "title": "Karma",
+   "artist": "Michael Ramir C.",
+   "genre": "EDM",
+   "feel": "punchy, modern",
+   "url": "https://assets.mixkit.co/music/1183/1183.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 128.0,
+   "length_s": 135,
+   "bars": 68,
+   "drop_30s": {
+    "song_bar": 43,
+    "t": 81.943
+   },
+   "drop_60s": {
+    "song_bar": 43,
+    "t": 81.943
+   }
+  },
+  {
+   "id": "mixkit-113",
+   "title": "House Fest",
+   "artist": "Alejandro Magaña (A. M.)",
+   "genre": "House",
+   "feel": "four-on-the-floor, drop early",
+   "url": "https://assets.mixkit.co/music/113/113.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 124.0,
+   "length_s": 136,
+   "bars": 63,
+   "drop_30s": {
+    "song_bar": 8,
+    "t": 16.504
+   },
+   "drop_60s": {
+    "song_bar": 24,
+    "t": 47.467
+   }
+  },
+  {
+   "id": "mixkit-126",
+   "title": "Trap Electro Vibes",
+   "artist": "Alejandro Magaña (A. M.)",
+   "genre": "Trap / electronic",
+   "feel": "hard-hitting trap, fast",
+   "url": "https://assets.mixkit.co/music/126/126.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 139.0,
+   "length_s": 116,
+   "bars": 67,
+   "drop_30s": {
+    "song_bar": 32,
+    "t": 55.327
+   },
+   "drop_60s": {
+    "song_bar": 32,
+    "t": 55.327
+   }
+  },
+  {
+   "id": "mixkit-78",
+   "title": "Sports Rock",
+   "artist": "Ahjay Stelino",
+   "genre": "Rock",
+   "feel": "guitar-driven, sporty",
+   "url": "https://assets.mixkit.co/music/78/78.mp3",
+   "source": "Mixkit",
+   "license": "Mixkit Stock Music Free License",
+   "license_url": "https://mixkit.co/license/#musicFree",
+   "credit": null,
+   "bpm": 130.0,
+   "length_s": 102,
+   "bars": 51,
+   "drop_30s": {
+    "song_bar": 28,
+    "t": 53.563
+   },
+   "drop_60s": {
+    "song_bar": 28,
+    "t": 53.563
+   }
+  },
+  {
+   "id": "incompetech-rhinoceros",
+   "title": "Rhinoceros",
+   "artist": "Kevin MacLeod",
+   "genre": "Electronic action",
+   "feel": "intense, action",
+   "url": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Rhinoceros.mp3",
+   "source": "Incompetech",
+   "license": "Creative Commons Attribution 4.0",
+   "license_url": "https://incompetech.com/music/royalty-free/licenses/",
+   "credit": "\"Rhinoceros\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0\nhttps://creativecommons.org/licenses/by/4.0/",
+   "bpm": 126.0,
+   "length_s": 204,
+   "bars": 99,
+   "drop_30s": {
+    "song_bar": 16,
+    "t": 30.528
+   },
+   "drop_60s": {
+    "song_bar": 16,
+    "t": 30.528
+   }
+  }
+ ]
+}

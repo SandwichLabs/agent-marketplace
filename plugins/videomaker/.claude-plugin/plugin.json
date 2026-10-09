@@ -1,0 +1,22 @@
+{
+  "name": "videomaker",
+  "version": "0.1.0",
+  "description": "Beat-matched promo reels from your own clips, rendered on your computer: design your brand's video kit as a motion storyboard, then turn a folder of footage and a track into a finished Instagram or TikTok reel and its caption.",
+  "author": {
+    "name": "Sandwich Labs",
+    "url": "https://sandwichlabs.dev"
+  },
+  "homepage": "https://github.com/SandwichLabs/agent-marketplace/tree/main/plugins/videomaker",
+  "repository": "https://github.com/SandwichLabs/agent-marketplace",
+  "keywords": [
+    "video",
+    "reels",
+    "instagram",
+    "tiktok",
+    "beat-matched",
+    "promo",
+    "fitness",
+    "marketing",
+    "ffmpeg"
+  ]
+}

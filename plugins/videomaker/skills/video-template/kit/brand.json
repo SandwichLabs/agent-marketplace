@@ -1,0 +1,49 @@
+{
+  "kit_api": 1,
+  "name": "Your Studio",
+  "short": "YOUR STUDIO",
+  "colors": {
+    "bg": "#0E0E10",
+    "ink": "#F4F2EE",
+    "ink2": "#ABA7A0",
+    "accent": "#F2C14E",
+    "hot": "#FFD77A",
+    "cream": "#FFF8E8"
+  },
+  "fonts": {
+    "display": { "family": "Space Grotesk", "file": "fonts/SpaceGrotesk.woff2", "weights": "300 700" },
+    "body": { "family": "DM Sans", "file": "fonts/DMSans.woff2", "weights": "100 1000" },
+    "mono": { "family": "Space Mono", "file": "fonts/SpaceMono-700.woff2", "weights": "700" }
+  },
+  "logo": null,
+  "logo_style": "plain",
+  "url": "yourstudio.com",
+  "instagram": null,
+  "address": { "line": "123 Example Street", "city": "Your City" },
+  "hours": [],
+  "offer": { "headline": "TRY YOUR FIRST CLASS FREE.", "pill": "BOOK ONLINE" },
+  "classes": ["Strength", "Conditioning", "Mobility"],
+  "voice": [
+    "Stronger every week.",
+    "Coached, not crowded."
+  ],
+  "hook": {
+    "mode": "jit",
+    "style": "hook",
+    "text": null,
+    "strike": null
+  },
+  "start_card": "bug",
+  "safe": { "l": 84, "r": 930, "top": 250, "bot": 1480 },
+  "grade": { "wash": 0.22, "contrast": 1.08, "saturate": 0.95, "brightness": 1.1, "vignette": 0.6, "grain": 0.06 },
+  "_starter": true,
+  "_notes": {
+    "_starter": "This is the neutral starter kit. Every value marked here is a placeholder: the video-template skill replaces them from the business's own website and assets, then deletes this key.",
+    "logo": "File name inside the kit folder (e.g. \"logo.svg\"), copied from the owner's assets. logo_style: \"plain\" fades it in; \"neon\" flickers it on like a sign (for neon-style logos).",
+    "hours": "List of {\"days\": \"MON–FRI\", \"time\": \"6A–8P\"}. Ask the owner or read them from their booking system; never invent hours. The out card skips the hours block while this is empty.",
+    "hook": "How every reel opens. mode \"template\": the kit fixes the opening line (text, with \"/\" between stacked lines, and strike = the beat its strike-through starts, or null) and every reel uses it. mode \"jit\": videomaker writes a fresh hook for each reel from its topic. style is the text style it uses.",
+    "start_card": "\"bug\" = the logo fades in small over the hook footage within one bar; the hook line owns frame 0. \"full\" = a full logo card on black for the first bar. \"none\" = no start card.",
+    "voice": "Lines the business already uses (site, signage, past posts). Reels only put these or the owner's own words on screen; never invented claims, stats or testimonials.",
+    "safe": "The text box inside the Instagram Reels UI: clear of the top 220 px, bottom 420 px and the right 150 px of the lower two-thirds."
+  }
+}

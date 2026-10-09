@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# reelmaker launcher: installs uv on first use (into ~/.local/bin, no admin password), then runs the engine in its
+# own locked Python environment. The workspace is the current folder unless REEL_WORKSPACE is set.
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENGINE="$HERE/../engine"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/opt/homebrew/bin:$PATH"
+if ! command -v uv >/dev/null 2>&1; then
+  echo "• installing uv (one time, about 10 s)…" >&2
+  curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh >&2
+fi
+if [ "$(uname)" = "Darwin" ]; then CACHE="$HOME/Library/Caches/reelmaker"; else CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/reelmaker"; fi
+# the venv lives in the user cache, never in the workspace (which may be synced to iCloud)
+export UV_PROJECT_ENVIRONMENT="${REEL_VENV:-$CACHE/venv}"
+export REEL_WORKSPACE="${REEL_WORKSPACE:-$PWD}"
+exec uv run --quiet --frozen --project "$ENGINE" python -m reelmaker "$@"

@@ -36,6 +36,11 @@ those are generated too.
   says so up front.
 - **Packages open to `<skill>/SKILL.md`.** That's what skill-creator's `package_skill.py`, Claude's skill upload and the
   Agent Plugins `skills/` discovery all expect.
+- **Skills that run software ship it locked and self-installing.** videomaker carries a `uv` project with a lockfile and
+  a launcher (`bin/reelmaker`) that installs uv into the user's home on first use; everything else (Python, ffmpeg, a
+  browser) comes in through it, with no admin password. Skills that need a local shell say so in their description and
+  stop politely in a chat-only sandbox. When one skill shares code with a sibling (videomaker reads video-template's
+  `runtime/`), list it under `package.vendor` in `marketplace.config.json` so its standalone upload gets a copy.
 - **Versions matter.** Catalogs offer updates by the plugin's `version`; bump it whenever a plugin changes.
 
 ## Sources

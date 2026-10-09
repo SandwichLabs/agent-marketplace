@@ -1,0 +1,91 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Reel preview</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  html,body{margin:0;height:100%;background:#050506;color:#eee;font:13px ui-monospace,Menlo,monospace}
+  body.preview{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  canvas{display:block}
+  body.preview canvas{height:calc(100vh - 90px);width:auto;aspect-ratio:9/16;box-shadow:0 0 0 1px #2A2D31}
+  #bar{display:none;width:min(600px,92vw);gap:10px;align-items:center}
+  body.preview #bar{display:flex} #bar input{flex:1}
+  #bar button{border:0;font:700 13px ui-monospace,monospace;padding:8px 14px;border-radius:6px;cursor:pointer}
+  #err{display:none;color:#ff8a7a;max-width:600px;white-space:pre-wrap}
+</style>
+<script src="/_rt/fx.js"></script>
+<script src="/_rt/reel.js"></script>
+<script src="/kit/cards.js"></script>
+<script src="/_engine/media.js"></script>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<div id="bar"><button id="play">PLAY</button><input id="scrub" type="range" min="0" max="1000" value="0"><span id="time">0.00</span></div>
+<pre id="err"></pre>
+<script type="module">
+// comp.html?reel=reels/<name>[&render]  — render mode: the renderer calls REELR.frame(i) for each frame (deterministic,
+// every needed clip seeked and awaited). Without &render: a live preview with the track, play and scrub.
+const P = new URLSearchParams(location.search), base = '/' + (P.get('reel') || '').replace(/^\/|\/$/g, '') + '/';
+const render = P.has('render');
+const get = async (u, fallback) => { const r = await fetch(u); if (!r.ok) { if (fallback !== undefined) return fallback; throw new Error(`${u}: ${r.status}`); } return r.json(); };
+const errors = [];
+window.addEventListener('error', e => errors.push(String(e.message)));
+try {
+  const [edit, beats, library, brand] = await Promise.all([get(base + 'edit.json'), get(base + 'beats.json'),
+    get('/.engine/library.json', { sources: {}, shots: {} }), get('/kit/brand.json')]);
+  for (const role of Object.keys(brand.fonts || {})) {
+    const f = brand.fonts[role], face = new FontFace(f.family, `url(/kit/${f.file})`, { weight: f.weights || '400' });
+    document.fonts.add(await face.load());
+  }
+  let logo = null;
+  if (brand.logo) { logo = new Image(); logo.src = '/kit/' + brand.logo; await new Promise(r => { logo.onload = r; logo.onerror = () => { logo = null; errors.push(`logo /kit/${brand.logo} failed to load`); r(); }; }); }
+  const media = MEDIA.create(library);
+  const reel = REEL.create({ edit, beats, library, kit: KIT, brand, logo, media });
+  const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+  const audio = base + (beats.track || 'track.m4a');
+  async function ready() {
+    await document.fonts.ready;
+    await Promise.all(reel.sources.map(s => media.seek(s, 0).catch(e => errors.push(e.message))));
+  }
+  async function frame(i) {
+    const t = i / reel.fps;
+    await Promise.all(reel.need(t).map(([src, ct]) => media.seek(src, ct)));
+    reel.draw(ctx, t, i);
+  }
+  const plan = () => ({
+    fps: reel.fps, duration: reel.duration, bpm: beats.bpm, bars: Math.round(reel.grid.index(beats.duration) / 4),
+    cuts: reel.cuts.map(c => ({ b: c.b, id: c.id, t0: c.t0, t1: c.t1, sec: c.sec, src: c.info.src })),
+    lines: reel.lines.map(l => ({ b0: l.b0, b1: l.b1, t0: l.t0, t1: l.t1, style: l.style, text: l.lines.join(' / ') })),
+    cards: reel.cards.map(c => ({ card: c.card, b0: c.b0, b1: c.b1, t0: c.t0, t1: c.t1 })),
+    sections: reel.sections.map(s => ({ name: s.name, b0: s.b0, b1: s.b1 })),
+    energy: beats.energy || [], cues: reel.cues(), warnings: reel.warnings,
+  });
+  window.REELR = { fps: reel.fps, duration: reel.duration, audio, canvas, ready, frame, plan, errors, warnings: reel.warnings };
+
+  if (!render) {
+    document.body.className = 'preview';
+    for (const w of reel.warnings) console.warn(w);
+    const a = new Audio(audio); a.preload = 'auto';
+    const play = document.getElementById('play'), scrub = document.getElementById('scrub'), time = document.getElementById('time');
+    await ready();
+    play.onclick = () => a.paused ? a.play() : a.pause();
+    a.onplay = () => play.textContent = 'PAUSE'; a.onpause = () => play.textContent = 'PLAY';
+    scrub.oninput = () => { a.currentTime = scrub.value / 1000 * reel.duration; };
+    addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); play.click(); } });
+    let last = -1;
+    (function loop() {
+      const t = a.currentTime, i = Math.floor(t * reel.fps);
+      const need = reel.need(t), active = new Set(need.map(n => n[0]));
+      for (const [src, ct] of need) { const v = media.get(src); if (v?.tagName !== 'VIDEO') continue; a.paused ? (v.pause(), Math.abs(v.currentTime - ct) > 0.02 && (v.currentTime = ct)) : media.sync(src, ct); }
+      media.pauseExcept(active);
+      if (i !== last || a.paused) { reel.draw(ctx, t, i); last = i; }
+      if (!a.paused) scrub.value = t / reel.duration * 1000;
+      time.textContent = t.toFixed(2);
+      requestAnimationFrame(loop);
+    })();
+  }
+} catch (e) {
+  errors.push(String(e.stack || e));
+  window.REELR = { failed: String(e.message || e), errors };
+  const el = document.getElementById('err'); el.style.display = 'block'; el.textContent = String(e.stack || e);
+}
+</script>
+</body></html>

@@ -1,0 +1,23 @@
+[project]
+name = "reelmaker"
+version = "0.1.0"
+description = "Beat-matched promo reels from a folder of clips: ingest, beat grid, edit interpreter, headless render."
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "numpy>=1.26",
+  "librosa>=0.10.2",
+  "soundfile>=0.12",
+  "pillow>=10.4",
+  "playwright>=1.48",
+  "static-ffmpeg>=2.7",
+]
+
+[project.scripts]
+reelmaker = "reelmaker.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["reelmaker"]

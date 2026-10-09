@@ -30,6 +30,24 @@
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       }
+    },
+    {
+      "name": "videomaker",
+      "category": "Creativity",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "package": {
+        "$comment": "videomaker reads the shared runtime and starter kit from its sibling video-template skill; a standalone upload gets copies.",
+        "vendor": {
+          "videomaker": {
+            "engine/runtime": "../video-template/runtime",
+            "engine/starter-kit": "../video-template/kit",
+            "engine/storyboard": "../video-template/scripts"
+          }
+        }
+      }
     }
   ]
 }

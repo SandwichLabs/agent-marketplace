@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.1.0/plugin.schema.json",
+  "name": "videomaker",
+  "version": "0.1.0",
+  "description": "Beat-matched promo reels from your own clips, rendered on your computer: design your brand's video kit as a motion storyboard, then turn a folder of footage and a track into a finished Instagram or TikTok reel and its caption.",
+  "author": { "name": "Sandwich Labs", "url": "https://sandwichlabs.dev" },
+  "homepage": "https://github.com/SandwichLabs/agent-marketplace/tree/main/plugins/videomaker",
+  "repository": "https://github.com/SandwichLabs/agent-marketplace",
+  "keywords": ["video", "reels", "instagram", "tiktok", "beat-matched", "promo", "fitness", "marketing", "ffmpeg"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Videomaker",
+        "shortDescription": "Turn your clips and a track into a finished, beat-matched reel.",
+        "longDescription": "Sets up its own video tools on your computer, designs your brand's start and out cards and text styles as a motion storyboard, tags your footage, cuts every shot to the song's beat with the drop on cue, renders a 1080x1920 MP4 and writes the post caption.",
+        "developerName": "Sandwich Labs",
+        "category": "Creativity",
+        "capabilities": ["Read", "Write"],
+        "defaultPrompt": ["Make a 30-second reel for our free week from my clips.", "Set up our video template: logo, colours, hours and offer."],
+        "websiteURL": "https://github.com/SandwichLabs/agent-marketplace/tree/main/plugins/videomaker"
+      }
+    }
+  }
+}

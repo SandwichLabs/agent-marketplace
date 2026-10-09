@@ -27,6 +27,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Creativity"
+    },
+    {
+      "name": "videomaker",
+      "source": {
+        "source": "local",
+        "path": "./plugins/videomaker"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
     }
   ]
 }

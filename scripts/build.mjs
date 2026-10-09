@@ -159,6 +159,11 @@ mkdirSync(stage, { recursive: true });
 for (const { dir, entry, skills } of plugins) {
 	for (const s of skills) {
 		cpSync(join(root, "plugins", dir, "skills", s), join(stage, s), { recursive: true });
+		// package.vendor: { "<skill>": { "<path in package>": "<path relative to the skill>" } } copies files a
+		// standalone upload needs from elsewhere in the plugin (e.g. a sibling skill's runtime)
+		for (const [to, from] of Object.entries(entry.package?.vendor?.[s] ?? {})) {
+			cpSync(join(root, "plugins", dir, "skills", s, from), join(stage, s, to), { recursive: true, filter: (p) => !p.endsWith(".pyc") && !p.includes("__pycache__") });
+		}
 		bundle(join(stage, s), entry.package?.bundle ?? []);
 		const entries = walk(join(stage, s)).length + 1;
 		if (entries > MAX_ENTRIES) {
@@ -166,7 +171,7 @@ for (const { dir, entry, skills } of plugins) {
 			process.exit(1);
 		}
 		const out = join(dist, `${s}.skill`);
-		const r = spawnSync("zip", ["-qrX", out, s, "-x", "*.DS_Store", "*/__pycache__/*"], { cwd: stage, stdio: "inherit" });
+		const r = spawnSync("zip", ["-qrX", out, s, "-x", "*.DS_Store", "*/__pycache__/*", "*/.venv/*"], { cwd: stage, stdio: "inherit" });
 		if (r.status !== 0) process.exit(r.status ?? 1);
 		writeFileSync(join(dist, `${s}.zip`), readFileSync(out));
 		console.log(`packaged ${relative(root, out)} and ${s}.zip (${entries} entries, ${Math.round(statSync(out).size / 1024)} KB)`);
